@@ -12,7 +12,7 @@ pygame.display.set_caption('Jogo da Isabella')
 
 # Caminhos
 caminho_base = os.path.dirname(__file__)
-caminho_img = os.path.join(caminho_base, 'assets', 'img')
+caminho_img = os.path.join(caminho_base, 'imagens')  # ← alterado aqui
 
 # Carrega imagens
 background_inicio = pygame.image.load(os.path.join(caminho_img, 'background.jpeg')).convert()
@@ -29,13 +29,13 @@ heart_img = pygame.transform.scale(heart_img, (40, 40))
 heart_broken_img = pygame.image.load(os.path.join(caminho_img, 'heart_broken.png')).convert_alpha()
 heart_broken_img = pygame.transform.scale(heart_broken_img, (40, 40))
 
-#azul 
+# Azul
 diamond_img = pygame.image.load(os.path.join(caminho_img, 'diamond_blue.png')).convert_alpha()
 diamond_img = pygame.transform.scale(diamond_img, (80, 80))
 diamond_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamond_blue_broken.png')).convert_alpha()
 diamond_broken_img = pygame.transform.scale(diamond_broken_img, (80, 80))
 
-#vermelho
+# Vermelho
 diamond_vermelho_img = pygame.image.load(os.path.join(caminho_img, 'diamond_vermelho.png')).convert_alpha()
 diamond_vermelho_img = pygame.transform.scale(diamond_vermelho_img, (80, 80))
 diamond_vermelho_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamond_vermelho_broken.png')).convert_alpha()
