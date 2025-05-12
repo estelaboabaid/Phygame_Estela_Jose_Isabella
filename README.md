@@ -17,7 +17,6 @@
 - Poderes especiais (*power-ups*) que facilitam a coleta
 - Aprimoramentos de velocidade(machado mais veloz, e redução da velocidade dos diamantes), resistência do machado, etc
 
-<<<<<<< HEAD
 # Ao atingir determinadas quantidades de pontos ou completar objetivos específicos, o jogador **avança para novos cenários**,  
 # cada um com níveis crescentes de dificuldade e diferentes elementos visuais e mecânicos, tornando a experiência cada vez mais **desafiadora e envolvente**.
 
