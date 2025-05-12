@@ -2,7 +2,7 @@
 
 # Diamonds Slash
 
-##**Integrantes:** Estela Boabaid, Isabella Massimini e Jose Capito
+## **Integrantes:** Estela Boabaid, Isabella Massimini e Jose Capito
 
 # Como funciona
 
