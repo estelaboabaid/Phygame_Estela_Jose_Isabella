@@ -29,37 +29,57 @@ heart_img = pygame.transform.scale(heart_img, (40, 40))
 heart_broken_img = pygame.image.load(os.path.join(caminho_img, 'heart_broken.png')).convert_alpha()
 heart_broken_img = pygame.transform.scale(heart_broken_img, (40, 40))
 
+#azul 
 diamond_img = pygame.image.load(os.path.join(caminho_img, 'diamond_blue.png')).convert_alpha()
 diamond_img = pygame.transform.scale(diamond_img, (80, 80))
 diamond_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamond_blue_broken.png')).convert_alpha()
 diamond_broken_img = pygame.transform.scale(diamond_broken_img, (80, 80))
 
-# Nova imagem da moeda
+#vermelho
+diamond_vermelho_img = pygame.image.load(os.path.join(caminho_img, 'diamond_vermelho.png')).convert_alpha()
+diamond_vermelho_img = pygame.transform.scale(diamond_vermelho_img, (80, 80))
+diamond_vermelho_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamond_vermelho_broken.png')).convert_alpha()
+diamond_vermelho_broken_img = pygame.transform.scale(diamond_vermelho_broken_img, (80, 80))
+
+# Moeda
 coin_img = pygame.image.load(os.path.join(caminho_img, 'coin.png')).convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (40, 40))
 
-# Posição do botão
+# Botão
 button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 
 # Classe dos diamantes
 class Diamante(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image_normal = diamond_img
-        self.image_broken = diamond_broken_img
+
+        # 25% de chance de ser vermelho
+        if random.random() < 0.5:
+            self.tipo = "vermelho"
+            self.image_normal = diamond_vermelho_img
+            self.image_broken = diamond_vermelho_broken_img
+            velocidade_extra = 3
+        else:
+            self.tipo = "azul"
+            self.image_normal = diamond_img
+            self.image_broken = diamond_broken_img
+            velocidade_extra = 1
+
         self.image = self.image_normal
         self.rect = self.image.get_rect()
         self.rect.y = random.randint(20, 150)
+
         self.broken = False
         self.break_timer = 0
 
         if random.choice([True, False]):
             self.rect.x = 0
-            self.speedx = random.randint(2, 4)
+            self.speedx = random.randint(2, 4) + velocidade_extra
         else:
             self.rect.x = WIDTH
-            self.speedx = -random.randint(2, 4)
-        self.speedy = random.randint(3, 6)
+            self.speedx = -random.randint(2, 4) - velocidade_extra
+
+        self.speedy = random.randint(3, 6) + velocidade_extra
 
     def update(self):
         if self.broken:
@@ -110,7 +130,11 @@ while game:
                 for d in diamantes:
                     if d.rect.collidepoint(event.pos) and not d.broken:
                         d.quebrar()
-                        pontuacao += 1
+                        # Ganha 2 moedas se for vermelho
+                        if d.tipo == "vermelho":
+                            pontuacao += 2
+                        else:
+                            pontuacao += 1
 
     # Renderização
     if tela == "inicio":
