@@ -159,7 +159,8 @@ while game:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for d in diamantes:
                     if d.rect.collidepoint(event.pos) and not d.broken:
-                        d.quebrar()
+                        d.queb
+                        
                         pontuacao += 1
 
     # Renderização
