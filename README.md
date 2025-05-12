@@ -31,8 +31,6 @@
 #### -**Machado niver 1** = 
 #### -**Machado niver 2** = 
 #### -**Machado niver 3** = 
-#### -**Machado niver 4** = 
-#### -**Machado niver 5** = 
 
 #### Cenarios:
 #### -**Basico** = Caverna subterranea
