@@ -8,7 +8,7 @@ pygame.init()
 WIDTH = 500
 HEIGHT = 500
 window = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Jogo da Isabella')
+pygame.display.set_caption('Diamonds Slash')
 
 # Caminhos
 caminho_base = os.path.dirname(__file__)
@@ -28,6 +28,15 @@ heart_img = pygame.image.load(os.path.join(caminho_img, 'heart_red.png')).conver
 heart_img = pygame.transform.scale(heart_img, (40, 40))
 heart_broken_img = pygame.image.load(os.path.join(caminho_img, 'heart_broken.png')).convert_alpha()
 heart_broken_img = pygame.transform.scale(heart_broken_img, (40, 40))
+
+# Picareta iniciante
+picareta_ini = pygame.image.load(os.path.join(caminho_img, 'picareta_iniciante.png')).convert_alpha()
+picareta_ini = pygame.transform.scale(picareta_ini, (70, 70))
+
+# Simbolo de restart
+recomeco = pygame.image.load(os.path.join(caminho_img, 'restart.png')).convert_alpha()
+recomeco = pygame.transform.scale(recomeco, (230, 120))
+recomeco_rect = recomeco.get_rect(center=(WIDTH // 2, HEIGHT // 1.85))
 
 # Azul
 diamond_img = pygame.image.load(os.path.join(caminho_img, 'diamond_blue.png')).convert_alpha()
@@ -71,6 +80,8 @@ pedra_img = pygame.image.load(os.path.join(caminho_img, 'pedra.png')).convert_al
 pedra_img = pygame.transform.scale(pedra_img, (50, 50))
 pedra_broken_img = pygame.image.load(os.path.join(caminho_img, 'pedra_broken.png')).convert_alpha()
 pedra_broken_img = pygame.transform.scale(pedra_broken_img, (50, 50))
+
+
 
 
 class Diamante(pygame.sprite.Sprite):
@@ -142,12 +153,14 @@ class Diamante(pygame.sprite.Sprite):
     def quebrar(self):
         self.image = self.image_broken
         self.broken = True
+    
 
 
 game = True
 tela = "inicio"
 clock = pygame.time.Clock()
 FPS = 30
+
 
 diamantes = pygame.sprite.Group()
 SPAWN_EVENT = pygame.USEREVENT + 1
@@ -192,6 +205,15 @@ while game:
                             pontuacao += 15
                         else:
                             pontuacao += 1
+        elif tela == "fim":
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if recomeco_rect.collidepoint(event.pos):
+                    # Reinicia o jogo
+                    tela = "jogo"
+                    vidas = [True, True, True]
+                    pontuacao = 0
+                    diamantes.empty()
+
 
     if tela == "inicio":
         window.blit(background_inicio, (0, 0))
@@ -223,12 +245,25 @@ while game:
         font = pygame.font.SysFont(None, 36)
         texto_pontuacao = font.render(str(pontuacao), True, (255, 255, 0))
         window.blit(texto_pontuacao, (60, 15))
+        pos_mouse = pygame.mouse.get_pos()
+        # Desenha o cursor personalizado na posição do mouse
+        window.blit(picareta_ini, pos_mouse)
 
     elif tela == "fim":
-        window.blit(background_jogo, (0, 0))
-        font = pygame.font.SysFont(None, 48)
-        txt = font.render("Fim de jogo!", True, (255, 255, 255))
-        window.blit(txt, (140, HEIGHT // 2))
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if recomeco_rect.collidepoint(event.pos):
+                # Reinicia o jogo
+                tela = "jogo"
+                vidas = [True, True, True]
+                pontuacao = 0
+                diamantes.empty()
+        elif tela == "fim":
+            window.blit(background_jogo, (0, 0))
+            font = pygame.font.SysFont(None, 48)
+            txt = font.render("Fim de jogo!", True, (255, 255, 255))
+            window.blit(txt, (140, HEIGHT // 2 - 80))
+            window.blit(recomeco, recomeco_rect)
+
 
     pygame.display.update()
 
