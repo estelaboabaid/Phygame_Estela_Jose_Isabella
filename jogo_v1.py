@@ -44,7 +44,7 @@ background_mistico = pygame.transform.scale(background_mistico, (WIDTH, HEIGHT))
 background_planeta = pygame.image.load(os.path.join(caminho_img, 'mundo.png')).convert()
 background_planeta = pygame.transform.scale(background_planeta, (WIDTH, HEIGHT))
 
-background_verde = pygame.image.load(os.path.join(caminho_img, 'mundo_verde.jpeg')).convert()
+background_verde = pygame.image.load(os.path.join(caminho_img, 'mundo_verde.png')).convert()
 background_verde = pygame.transform.scale(background_verde, (WIDTH, HEIGHT))
 
 button_image = pygame.image.load(os.path.join(caminho_img, 'button.png')).convert_alpha()
@@ -242,6 +242,7 @@ while game:
                     vidas = [True, True, True]
                     diamantes.empty()
                 elif mundo_verde_rect.collidepoint(event.pos):
+                    window.blit(mundo_verde_img, mundo_verde_rect)
                     tela = "jogo"
                     tempo_inicial = pygame.time.get_ticks()
                     fase_atual = "mundo_verde"
@@ -250,12 +251,12 @@ while game:
                     vidas = [True, True, True]
                     diamantes.empty()
                 elif mundo1_rect.collidepoint(event.pos):
-                        tela = "jogo"
-                        fase_atual = "mundo1"
-                        tempo_inicial = pygame.time.get_ticks()
-                        pontuacao = 0
-                        vidas = [True, True, True]
-                        diamantes.empty()
+                    tela = "jogo"
+                    fase_atual = "mundo1"
+                    tempo_inicial = pygame.time.get_ticks()
+                    pontuacao = 0
+                    vidas = [True, True, True]
+                    diamantes.empty()
                     
         elif tela == "jogo":
             if event.type == SPAWN_EVENT:
@@ -350,10 +351,11 @@ while game:
     elif tela == "mundo_verde":
         window.fill((50, 10, 30))
         font = pygame.font.SysFont(None, 48)
-        texto = font.render("Você entrou no Mundo Místico!", True, (255, 255, 255))
+        texto = font.render("Você entrou no Mundo Verde!", True, (255, 255, 255))  # ← Corrigido
         window.blit(background_verde, (0 , 0))
         sub = pygame.font.SysFont(None, 24).render("Pressione ESPAÇO para voltar", True, (180, 180, 180))
         window.blit(sub, (80, HEIGHT // 2 + 30))
+
 
     elif tela == "mundo1":
         window.fill((50, 10, 30))
@@ -364,7 +366,17 @@ while game:
         window.blit(sub, (80, HEIGHT // 2 + 30))
 
     elif tela == "jogo":
-        window.blit(background_jogo, (0, 0))
+
+        if fase_atual == "mundo_planeta":
+            window.blit(background_planeta, (0, 0))
+        elif fase_atual == "mundo_mistico":
+            window.blit(background_mistico, (0, 0))
+        elif fase_atual == "mundo_verde":
+            window.blit(background_verde, (0, 0))
+        elif fase_atual == "mundo1":
+            window.blit(background_jogo, (0, 0))
+        else:
+            window.blit(background_jogo, (0, 0))
         # Atualiza e desenha diamantes
         for d in list(diamantes):
             status = d.update()
