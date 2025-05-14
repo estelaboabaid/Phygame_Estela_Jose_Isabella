@@ -18,6 +18,10 @@ caminho_img = os.path.join(caminho_base, 'imagens')
 background_inicio = pygame.image.load(os.path.join(caminho_img, 'background.jpeg')).convert()
 background_inicio = pygame.transform.scale(background_inicio, (WIDTH, HEIGHT))
 
+# Orbe amaldiçoado
+orbe_img = pygame.image.load(os.path.join(caminho_img, 'orbe.png')).convert_alpha()
+orbe_img = pygame.transform.scale(orbe_img, (80, 80))
+
 background_jogo = pygame.image.load(os.path.join(caminho_img, 'mina.jpeg')).convert()
 background_jogo = pygame.transform.scale(background_jogo, (WIDTH, HEIGHT))
 
@@ -114,6 +118,11 @@ class Diamante(pygame.sprite.Sprite):
             self.image_normal = pedra_img
             self.image_broken = pedra_broken_img
             velocidade_extra = 0
+        elif chance < 0.20:
+            self.tipo = "orbe"
+            self.image_normal = orbe_img
+            self.image_broken = orbe_img  
+            velocidade_extra = 1
         else:
             self.tipo = "azul"
             self.image_normal = diamond_img
@@ -188,6 +197,9 @@ while game:
                 for d in diamantes:
                     if d.rect.collidepoint(event.pos) and not d.broken:
                         d.quebrar()
+                        if d.tipo == "orbe":
+                            vidas = [False, False, False]
+                            tela = "fim"
                         if d.tipo == "pedra":
                             for i in range(len(vidas)):
                                 if vidas[i]:
