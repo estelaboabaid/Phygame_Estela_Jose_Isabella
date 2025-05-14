@@ -28,9 +28,9 @@
 #### -**Roxo** = 15 moedas
 
 #### Machado e seus valores para serem desbloqueados:
-#### -**Machado niver 1** = 
-#### -**Machado niver 2** = 
-#### -**Machado niver 3** = 
+#### -**Machado basico** = 
+#### -**Machado intermediario** = 
+#### -**Machado  lendario** = 
 
 #### Cenarios:
 #### -**Basico** = Caverna subterranea
@@ -41,6 +41,4 @@
 #### Powers-ups:
 #### - **Imã de Diamantes**: atrai diamantes automaticamente
 #### - **Tempo Congelado**: pausa os obstáculos por alguns segundos
-#### - **Toque de Roxo**: diamantes viram todos roxos, que possuem maior valor
-#### - **Modo Fúria da picareta**: super velocidade da picareta por tempo limitado
 #### - **Modo calma diamantes**: reduz a velocidade dos diamantes por tempo limitado

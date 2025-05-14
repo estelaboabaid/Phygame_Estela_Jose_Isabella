@@ -18,6 +18,16 @@ caminho_img = os.path.join(caminho_base, 'imagens')
 background_inicio = pygame.image.load(os.path.join(caminho_img, 'background.jpeg')).convert()
 background_inicio = pygame.transform.scale(background_inicio, (WIDTH, HEIGHT))
 
+# Cronometro
+fonte = pygame.font.SysFont("arial", 36)
+tempo_inicial = pygame.time.get_ticks()  # em milissegundos
+tempo_total = 60 * 1000  # 60 segundos em milissegundos
+
+#Botão menu 
+menu = pygame.image.load(os.path.join(caminho_img, 'menu_bottao.png')).convert_alpha()
+menu_tam = pygame.transform.scale(menu, (350, 300))
+
+
 # Orbe amaldiçoado
 orbe_img = pygame.image.load(os.path.join(caminho_img, 'orbe.png')).convert_alpha()
 orbe_img = pygame.transform.scale(orbe_img, (80, 80))
@@ -51,7 +61,7 @@ picareta_ini = pygame.transform.scale(picareta_ini, (70, 70))
 
 # Simbolo de restart
 recomeco = pygame.image.load(os.path.join(caminho_img, 'restart.png')).convert_alpha()
-recomeco = pygame.transform.scale(recomeco, (230, 120))
+recomeco = pygame.transform.scale(recomeco, (210, 100))
 recomeco_rect = recomeco.get_rect(center=(WIDTH // 2, HEIGHT // 1.85))
 
 # Azul
@@ -75,11 +85,11 @@ diamond_roxo_broken_img = pygame.transform.scale(diamond_roxo_broken_img, (80, 8
 # Laranja
 diamond_laranja_img = pygame.image.load(os.path.join(caminho_img, 'diamond_laranja.png')).convert_alpha()
 diamond_laranja_img = pygame.transform.scale(diamond_laranja_img, (80, 80))
-diamond_laranja_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamond_laranja_broken.png')).convert_alpha()
+diamond_laranja_broken_img = pygame.image.load(os.path.join(caminho_img, 'broken_laranja.png')).convert_alpha()
 diamond_laranja_broken_img = pygame.transform.scale(diamond_laranja_broken_img, (80, 80))
 
 # Verde
-diamond_verde_img = pygame.image.load(os.path.join(caminho_img, 'diamond_verde.png')).convert_alpha()
+diamond_verde_img = pygame.image.load(os.path.join(caminho_img, 'diamante_verde.png')).convert_alpha()
 diamond_verde_img = pygame.transform.scale(diamond_verde_img, (80, 80))
 diamond_verde_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamons_verde_broken.png')).convert_alpha()
 diamond_verde_broken_img = pygame.transform.scale(diamond_verde_broken_img, (80, 80))
@@ -87,9 +97,6 @@ diamond_verde_broken_img = pygame.transform.scale(diamond_verde_broken_img, (80,
 # Moeda
 coin_img = pygame.image.load(os.path.join(caminho_img, 'coin.png')).convert_alpha()
 coin_img = pygame.transform.scale(coin_img, (40, 40))
-
-# Botão
-
 
 # Pedra
 pedra_img = pygame.image.load(os.path.join(caminho_img, 'pedra.png')).convert_alpha()
@@ -107,13 +114,12 @@ mundo_verde_img = pygame.transform.scale(mundo_verde_img, (150, 150))
 mundo1_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mundoB.png')).convert_alpha()
 mundo1_img = pygame.transform.scale(mundo1_img, (150, 150))
 
-
 button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 mundo_planeta_rect = mundo_planeta_img.get_rect(center=( 2 *WIDTH // 3, (HEIGHT // 2) + 85))
 mundo_mistico_rect = mundo_mistico_img.get_rect(center=(2 * WIDTH // 3, (HEIGHT // 2) - 100))
 mundo_verde_rect = mundo_verde_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) + 85))
 mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 100))
-
+menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
 
 
 class Diamante(pygame.sprite.Sprite):
@@ -121,7 +127,12 @@ class Diamante(pygame.sprite.Sprite):
         super().__init__()
 
         chance = random.random()
-        if chance < 0.10:
+        if chance < 0.02:
+            self.tipo = "orbe"
+            self.image_normal = orbe_img
+            self.image_broken = orbe_img  
+            velocidade_extra = 1
+        if chance < 0.08:
             self.tipo = "roxo"
             self.image_normal = diamond_roxo_img
             self.image_broken = diamond_roxo_broken_img
@@ -146,11 +157,6 @@ class Diamante(pygame.sprite.Sprite):
             self.image_normal = pedra_img
             self.image_broken = pedra_broken_img
             velocidade_extra = 0
-        elif chance < 0.20:
-            self.tipo = "orbe"
-            self.image_normal = orbe_img
-            self.image_broken = orbe_img  
-            velocidade_extra = 1
         else:
             self.tipo = "azul"
             self.image_normal = diamond_img
@@ -205,6 +211,8 @@ pygame.time.set_timer(SPAWN_EVENT, 1200)
 
 vidas = [True, True, True]
 pontuacao = 0
+moedas_totais = 0  # Total acumulado entre rodadas
+fase_atual = "padrao"
 
 while game:
     clock.tick(FPS)
@@ -217,18 +225,38 @@ while game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
                     tela = "selecionar_mundo"
-
         elif tela == "selecionar_mundo":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mundo_planeta_rect.collidepoint(event.pos):
-                    tela = "mundo_planeta"
+                    tela = "jogo"
+                    tempo_inicial = pygame.time.get_ticks()
+                    fase_atual = "mundo_planeta"
+                    pontuacao = 0
+                    vidas = [True, True, True]
+                    diamantes.empty()
                 elif mundo_mistico_rect.collidepoint(event.pos):
-                    tela = "mundo_mistico"
+                    tela = "jogo"
+                    fase_atual = "mundo_mistico"
+                    tempo_inicial = pygame.time.get_ticks()
+                    pontuacao = 0
+                    vidas = [True, True, True]
+                    diamantes.empty()
                 elif mundo_verde_rect.collidepoint(event.pos):
-                    tela = "mundo_verde"
+                    tela = "jogo"
+                    tempo_inicial = pygame.time.get_ticks()
+                    fase_atual = "mundo_verde"
+                    tempo_inicial = pygame.time.get_ticks()
+                    pontuacao = 0
+                    vidas = [True, True, True]
+                    diamantes.empty()
                 elif mundo1_rect.collidepoint(event.pos):
-                    tela = "mundo1"
-
+                        tela = "jogo"
+                        fase_atual = "mundo1"
+                        tempo_inicial = pygame.time.get_ticks()
+                        pontuacao = 0
+                        vidas = [True, True, True]
+                        diamantes.empty()
+                    
         elif tela == "jogo":
             if event.type == SPAWN_EVENT:
                 diamantes.add(Diamante())
@@ -256,14 +284,30 @@ while game:
                             pontuacao += 15
                         else:
                             pontuacao += 1
+            # Tempo restante
+            tempo_passado = pygame.time.get_ticks() - tempo_inicial
+            tempo_restante = max(0, (tempo_total - tempo_passado) // 1000)  # em segundos
+            # Exibe no canto superior direito
+            texto_tempo = fonte.render(f"{tempo_restante}s", True, (255, 255, 255))
+            largura_texto = texto_tempo.get_width()
+            window.blit(texto_tempo, ((WIDTH - largura_texto) // 2, 10))
+            # Quando tempo acabar
+            if tempo_restante <= 0:
+                moedas_totais += pontuacao ######################################################
+                tela = "fim"
+            
 
-        elif tela == "fim":
+        if tela == "fim":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if recomeco_rect.collidepoint(event.pos):
                     tela = "jogo"
                     vidas = [True, True, True]
+                    tempo_inicial = pygame.time.get_ticks()
                     pontuacao = 0
                     diamantes.empty()
+                elif menu_rect.collidepoint(event.pos):
+                    tela = "selecionar_mundo"
+
 
         elif tela in ["mundo_planeta", "mundo_mistico", "mundo1", "mundo_verde"]:
             if event.type == pygame.KEYDOWN:
@@ -273,6 +317,9 @@ while game:
     if tela == "inicio":
         window.blit(background_inicio, (0, 0))
         window.blit(button_image, button_rect)
+        window.blit(coin_img, (10, 10))
+        texto_moedas = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
+        window.blit(texto_moedas, (60, 15))
 
     elif tela == "selecionar_mundo":
         window.blit(background_jogo, (0, 0))
@@ -280,6 +327,9 @@ while game:
         window.blit(mundo_mistico_img, mundo_mistico_rect)
         window.blit(mundo_verde_img, mundo_verde_rect)
         window.blit(mundo1_img, mundo1_rect)
+        window.blit(coin_img, (10, 10))
+        texto_moedas_totais = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
+        window.blit(texto_moedas_totais, (60, 15))
 
     elif tela == "mundo_planeta":
         window.fill((10, 10, 50))
@@ -295,8 +345,8 @@ while game:
         texto = font.render("Você entrou no Mundo Místico!", True, (255, 255, 255))
         window.blit(background_mistico, (0 , 0))
         sub = pygame.font.SysFont(None, 24).render("Pressione ESPAÇO para voltar", True, (180, 180, 180))
-        window.blit(sub, (80, HEIGHT // 2 + 30))
-    
+        window.blit(sub, (90, HEIGHT // 2 + 30))
+
     elif tela == "mundo_verde":
         window.fill((50, 10, 30))
         font = pygame.font.SysFont(None, 48)
@@ -304,7 +354,7 @@ while game:
         window.blit(background_verde, (0 , 0))
         sub = pygame.font.SysFont(None, 24).render("Pressione ESPAÇO para voltar", True, (180, 180, 180))
         window.blit(sub, (80, HEIGHT // 2 + 30))
-    
+
     elif tela == "mundo1":
         window.fill((50, 10, 30))
         font = pygame.font.SysFont(None, 48)
@@ -315,6 +365,7 @@ while game:
 
     elif tela == "jogo":
         window.blit(background_jogo, (0, 0))
+        # Atualiza e desenha diamantes
         for d in list(diamantes):
             status = d.update()
             if status == "remover":
@@ -326,27 +377,42 @@ while game:
                         break
                 diamantes.remove(d)
                 if not any(vidas):
+                    moedas_totais += pontuacao ################################################
                     tela = "fim"
             else:
                 window.blit(d.image, d.rect)
-
+        # Desenha corações (vidas)
         for i in range(3):
             img = heart_img if vidas[i] else heart_broken_img
             window.blit(img, (WIDTH - (i + 1) * 50, 10))
 
+        # Desenha moeda e pontuação
         window.blit(coin_img, (10, 10))
-        font = pygame.font.SysFont(None, 36)
-        texto_pontuacao = font.render(str(pontuacao), True, (255, 255, 0))
+        texto_pontuacao = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
         window.blit(texto_pontuacao, (60, 15))
+
+        # Desenha cronômetro no topo centralizado
+        tempo_passado = pygame.time.get_ticks() - tempo_inicial
+        tempo_restante = max(0, (tempo_total - tempo_passado) // 1000)
+        texto_tempo = fonte.render(f"{tempo_restante}s", True, (255, 255, 255))
+        largura_texto = texto_tempo.get_width()
+        window.blit(texto_tempo, ((WIDTH - largura_texto) // 2, 10))
+        # Desenha picareta
         pos_mouse = pygame.mouse.get_pos()
         window.blit(picareta_ini, pos_mouse)
+
 
     elif tela == "fim":
         window.blit(background_jogo, (0, 0))
         font = pygame.font.SysFont(None, 48)
         txt = font.render("Fim de jogo!", True, (255, 255, 255))
-        window.blit(txt, (140, HEIGHT // 2 - 80))
+        window.blit(txt, (155, HEIGHT // 2 - 80))
         window.blit(recomeco, recomeco_rect)
+        window.blit(coin_img, (10, 10))
+        window.blit(menu_tam, menu_rect)
+        window.blit(texto_pontuacao, (60, 15))
+            
+    
 
     pygame.display.update()
 
