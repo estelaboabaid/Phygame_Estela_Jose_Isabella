@@ -413,7 +413,6 @@ while game:
         window.blit(texto_pontuacao, (60, 15))
             
     
-
     pygame.display.update()
 
 pygame.quit()
