@@ -25,6 +25,18 @@ orbe_img = pygame.transform.scale(orbe_img, (80, 80))
 background_jogo = pygame.image.load(os.path.join(caminho_img, 'mina.jpeg')).convert()
 background_jogo = pygame.transform.scale(background_jogo, (WIDTH, HEIGHT))
 
+background_mundos = pygame.image.load(os.path.join(caminho_img, 'fundo_mundos.jpg')).convert()
+background_mundos = pygame.transform.scale(background_mundos, (WIDTH, HEIGHT))
+
+background_mistico = pygame.image.load(os.path.join(caminho_img, 'mistico.png')).convert()
+background_mistico = pygame.transform.scale(background_mistico, (WIDTH, HEIGHT))
+
+background_planeta = pygame.image.load(os.path.join(caminho_img, 'mundo.png')).convert()
+background_planeta = pygame.transform.scale(background_planeta, (WIDTH, HEIGHT))
+
+background_verde = pygame.image.load(os.path.join(caminho_img, 'mundo_verde.jpeg')).convert()
+background_verde = pygame.transform.scale(background_verde, (WIDTH, HEIGHT))
+
 button_image = pygame.image.load(os.path.join(caminho_img, 'button.png')).convert_alpha()
 button_image = pygame.transform.scale(button_image, (350, 300))
 
@@ -77,7 +89,7 @@ coin_img = pygame.image.load(os.path.join(caminho_img, 'coin.png')).convert_alph
 coin_img = pygame.transform.scale(coin_img, (40, 40))
 
 # Botão
-button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
+
 
 # Pedra
 pedra_img = pygame.image.load(os.path.join(caminho_img, 'pedra.png')).convert_alpha()
@@ -85,6 +97,22 @@ pedra_img = pygame.transform.scale(pedra_img, (50, 50))
 pedra_broken_img = pygame.image.load(os.path.join(caminho_img, 'pedra_broken.png')).convert_alpha()
 pedra_broken_img = pygame.transform.scale(pedra_broken_img, (50, 50))
 
+#mundos
+mundo_planeta_img = pygame.image.load(os.path.join(caminho_img, 'bottao_planeta.png')).convert_alpha()
+mundo_planeta_img = pygame.transform.scale(mundo_planeta_img, (150, 150))
+mundo_mistico_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mistico.png')).convert_alpha()
+mundo_mistico_img = pygame.transform.scale(mundo_mistico_img, (150, 150))
+mundo_verde_img = pygame.image.load(os.path.join(caminho_img, 'bottao_verde.png')).convert_alpha()
+mundo_verde_img = pygame.transform.scale(mundo_verde_img, (150, 150))
+mundo1_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mundoB.png')).convert_alpha()
+mundo1_img = pygame.transform.scale(mundo1_img, (150, 150))
+
+
+button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
+mundo_planeta_rect = mundo_planeta_img.get_rect(center=( 2 *WIDTH // 3, (HEIGHT // 2) + 85))
+mundo_mistico_rect = mundo_mistico_img.get_rect(center=(2 * WIDTH // 3, (HEIGHT // 2) - 100))
+mundo_verde_rect = mundo_verde_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) + 85))
+mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 100))
 
 
 
@@ -188,7 +216,18 @@ while game:
         if tela == "inicio":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
-                    tela = "jogo"
+                    tela = "selecionar_mundo"
+
+        elif tela == "selecionar_mundo":
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if mundo_planeta_rect.collidepoint(event.pos):
+                    tela = "mundo_planeta"
+                elif mundo_mistico_rect.collidepoint(event.pos):
+                    tela = "mundo_mistico"
+                elif mundo_verde_rect.collidepoint(event.pos):
+                    tela = "mundo_verde"
+                elif mundo1_rect.collidepoint(event.pos):
+                    tela = "mundo1"
 
         elif tela == "jogo":
             if event.type == SPAWN_EVENT:
@@ -217,23 +256,65 @@ while game:
                             pontuacao += 15
                         else:
                             pontuacao += 1
+
         elif tela == "fim":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if recomeco_rect.collidepoint(event.pos):
-                    # Reinicia o jogo
                     tela = "jogo"
                     vidas = [True, True, True]
                     pontuacao = 0
                     diamantes.empty()
 
+        elif tela in ["mundo_planeta", "mundo_mistico", "mundo1", "mundo_verde"]:
+            if event.type == pygame.KEYDOWN:
+                tela = "inicio"
 
+    # TELAS
     if tela == "inicio":
         window.blit(background_inicio, (0, 0))
         window.blit(button_image, button_rect)
 
+    elif tela == "selecionar_mundo":
+        window.blit(background_jogo, (0, 0))
+        window.blit(mundo_planeta_img, mundo_planeta_rect)
+        window.blit(mundo_mistico_img, mundo_mistico_rect)
+        window.blit(mundo_verde_img, mundo_verde_rect)
+        window.blit(mundo1_img, mundo1_rect)
+
+    elif tela == "mundo_planeta":
+        window.fill((10, 10, 50))
+        font = pygame.font.SysFont(None, 48)
+        texto = font.render("Você entrou no Mundo Planeta!", True, (255, 255, 255))
+        window.blit(background_planeta, (0, 0))
+        sub = pygame.font.SysFont(None, 24).render("Pressione ESPAÇO para voltar", True, (180, 180, 180))
+        window.blit(sub, (80, HEIGHT // 2 + 30))
+
+    elif tela == "mundo_mistico":
+        window.fill((50, 10, 30))
+        font = pygame.font.SysFont(None, 48)
+        texto = font.render("Você entrou no Mundo Místico!", True, (255, 255, 255))
+        window.blit(background_mistico, (0 , 0))
+        sub = pygame.font.SysFont(None, 24).render("Pressione ESPAÇO para voltar", True, (180, 180, 180))
+        window.blit(sub, (80, HEIGHT // 2 + 30))
+    
+    elif tela == "mundo_verde":
+        window.fill((50, 10, 30))
+        font = pygame.font.SysFont(None, 48)
+        texto = font.render("Você entrou no Mundo Místico!", True, (255, 255, 255))
+        window.blit(background_verde, (0 , 0))
+        sub = pygame.font.SysFont(None, 24).render("Pressione ESPAÇO para voltar", True, (180, 180, 180))
+        window.blit(sub, (80, HEIGHT // 2 + 30))
+    
+    elif tela == "mundo1":
+        window.fill((50, 10, 30))
+        font = pygame.font.SysFont(None, 48)
+        texto = font.render("Você entrou no Mundo Místico!", True, (255, 255, 255))
+        window.blit(background_jogo, (0 , 0))
+        sub = pygame.font.SysFont(None, 24).render("Pressione ESPAÇO para voltar", True, (180, 180, 180))
+        window.blit(sub, (80, HEIGHT // 2 + 30))
+
     elif tela == "jogo":
         window.blit(background_jogo, (0, 0))
-
         for d in list(diamantes):
             status = d.update()
             if status == "remover":
@@ -258,24 +339,14 @@ while game:
         texto_pontuacao = font.render(str(pontuacao), True, (255, 255, 0))
         window.blit(texto_pontuacao, (60, 15))
         pos_mouse = pygame.mouse.get_pos()
-        # Desenha o cursor personalizado na posição do mouse
         window.blit(picareta_ini, pos_mouse)
 
     elif tela == "fim":
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if recomeco_rect.collidepoint(event.pos):
-                # Reinicia o jogo
-                tela = "jogo"
-                vidas = [True, True, True]
-                pontuacao = 0
-                diamantes.empty()
-        elif tela == "fim":
-            window.blit(background_jogo, (0, 0))
-            font = pygame.font.SysFont(None, 48)
-            txt = font.render("Fim de jogo!", True, (255, 255, 255))
-            window.blit(txt, (140, HEIGHT // 2 - 80))
-            window.blit(recomeco, recomeco_rect)
-
+        window.blit(background_jogo, (0, 0))
+        font = pygame.font.SysFont(None, 48)
+        txt = font.render("Fim de jogo!", True, (255, 255, 255))
+        window.blit(txt, (140, HEIGHT // 2 - 80))
+        window.blit(recomeco, recomeco_rect)
 
     pygame.display.update()
 
