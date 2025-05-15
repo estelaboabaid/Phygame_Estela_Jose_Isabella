@@ -213,7 +213,7 @@ vidas = [True, True, True]
 pontuacao = 0
 moedas_totais = 0  # Total acumulado entre rodadas
 fase_atual = "padrao"
-
+pont_game = 0
 while game:
     clock.tick(FPS)
 
@@ -231,14 +231,14 @@ while game:
                     tela = "jogo"
                     tempo_inicial = pygame.time.get_ticks()
                     fase_atual = "mundo_planeta"
-                    pontuacao = 0
+                    moedas_totais += pontuacao
                     vidas = [True, True, True]
                     diamantes.empty()
                 elif mundo_mistico_rect.collidepoint(event.pos):
                     tela = "jogo"
                     fase_atual = "mundo_mistico"
                     tempo_inicial = pygame.time.get_ticks()
-                    pontuacao = 0
+                    moedas_totais += pontuacao
                     vidas = [True, True, True]
                     diamantes.empty()
                 elif mundo_verde_rect.collidepoint(event.pos):
@@ -247,44 +247,47 @@ while game:
                     tempo_inicial = pygame.time.get_ticks()
                     fase_atual = "mundo_verde"
                     tempo_inicial = pygame.time.get_ticks()
-                    pontuacao = 0
+                    moedas_totais += pontuacao
                     vidas = [True, True, True]
                     diamantes.empty()
                 elif mundo1_rect.collidepoint(event.pos):
                     tela = "jogo"
                     fase_atual = "mundo1"
                     tempo_inicial = pygame.time.get_ticks()
-                    pontuacao = 0
+                    moedas_totais += pontuacao
                     vidas = [True, True, True]
                     diamantes.empty()
                     
         elif tela == "jogo":
             if event.type == SPAWN_EVENT:
                 diamantes.add(Diamante())
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                for d in diamantes:
-                    if d.rect.collidepoint(event.pos) and not d.broken:
-                        d.quebrar()
-                        if d.tipo == "orbe":
-                            vidas = [False, False, False]
+            # Detecção contínua de clique com o mouse sobre diamantes
+        if pygame.mouse.get_pressed()[0]:  # Botão esquerdo pressionado
+            mouse_pos = pygame.mouse.get_pos()
+            for d in diamantes:
+                if d.rect.collidepoint(mouse_pos) and not d.broken:
+                    d.quebrar()
+                    if d.tipo == "orbe":
+                        vidas = [False, False, False]
+                        tela = "fim"
+                    elif d.tipo == "pedra":
+                        for i in range(len(vidas)):
+                            if vidas[i]:
+                                vidas[i] = False
+                                break
+                        if not any(vidas):
                             tela = "fim"
-                        if d.tipo == "pedra":
-                            for i in range(len(vidas)):
-                                if vidas[i]:
-                                    vidas[i] = False
-                                    break
-                            if not any(vidas):
-                                tela = "fim"
-                        elif d.tipo == "vermelho":
-                            pontuacao += 5
-                        elif d.tipo == "verde":
-                            pontuacao += 2
-                        elif d.tipo == "laranja":
-                            pontuacao += 10
-                        elif d.tipo == "roxo":
-                            pontuacao += 15
-                        else:
-                            pontuacao += 1
+                    elif d.tipo == "vermelho":
+                        pontuacao += 5
+                    elif d.tipo == "verde":
+                        pontuacao += 2
+                    elif d.tipo == "laranja":
+                        pontuacao += 10
+                    elif d.tipo == "roxo":
+                        pontuacao += 15
+                    else:
+                        pontuacao += 1
+
             # Tempo restante
             tempo_passado = pygame.time.get_ticks() - tempo_inicial
             tempo_restante = max(0, (tempo_total - tempo_passado) // 1000)  # em segundos
@@ -294,7 +297,7 @@ while game:
             window.blit(texto_tempo, ((WIDTH - largura_texto) // 2, 10))
             # Quando tempo acabar
             if tempo_restante <= 0:
-                moedas_totais += pontuacao ######################################################
+                moedas_totais += pont_game 
                 tela = "fim"
             
 
@@ -304,7 +307,7 @@ while game:
                     tela = "jogo"
                     vidas = [True, True, True]
                     tempo_inicial = pygame.time.get_ticks()
-                    pontuacao = 0
+                    moedas_totais += pont_game 
                     diamantes.empty()
                 elif menu_rect.collidepoint(event.pos):
                     tela = "selecionar_mundo"
@@ -351,7 +354,7 @@ while game:
     elif tela == "mundo_verde":
         window.fill((50, 10, 30))
         font = pygame.font.SysFont(None, 48)
-        texto = font.render("Você entrou no Mundo Verde!", True, (255, 255, 255))  # ← Corrigido
+        texto = font.render("Você entrou no Mundo Verde!", True, (255, 255, 255)) 
         window.blit(background_verde, (0 , 0))
         sub = pygame.font.SysFont(None, 24).render("Pressione ESPAÇO para voltar", True, (180, 180, 180))
         window.blit(sub, (80, HEIGHT // 2 + 30))
@@ -400,8 +403,10 @@ while game:
 
         # Desenha moeda e pontuação
         window.blit(coin_img, (10, 10))
-        texto_pontuacao = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
-        window.blit(texto_pontuacao, (60, 15))
+        moed_part = pygame.font.SysFont(None, 36).render(str(pontuacao), True, (255, 255, 0))
+        window.blit(moed_part, (60, 15))
+        # texto_pontuacao = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
+        # window.blit(texto_pontuacao, (60, 15))
 
         # Desenha cronômetro no topo centralizado
         tempo_passado = pygame.time.get_ticks() - tempo_inicial
@@ -422,7 +427,7 @@ while game:
         window.blit(recomeco, recomeco_rect)
         window.blit(coin_img, (10, 10))
         window.blit(menu_tam, menu_rect)
-        window.blit(texto_pontuacao, (60, 15))
+        window.blit(moed_part, (60, 15))  # Moedas totais 
             
     
     pygame.display.update()
