@@ -213,7 +213,7 @@ vidas = [True, True, True]
 pontuacao = 0
 moedas_totais = 0  # Total acumulado entre rodadas
 fase_atual = "padrao"
-pont_game = 0
+
 while game:
     clock.tick(FPS)
 
@@ -297,7 +297,7 @@ while game:
             window.blit(texto_tempo, ((WIDTH - largura_texto) // 2, 10))
             # Quando tempo acabar
             if tempo_restante <= 0:
-                moedas_totais += pont_game 
+                moedas_totais += pontuacao
                 tela = "fim"
             
 
@@ -307,7 +307,7 @@ while game:
                     tela = "jogo"
                     vidas = [True, True, True]
                     tempo_inicial = pygame.time.get_ticks()
-                    moedas_totais += pont_game 
+                    pontuacao = 0
                     diamantes.empty()
                 elif menu_rect.collidepoint(event.pos):
                     tela = "selecionar_mundo"
