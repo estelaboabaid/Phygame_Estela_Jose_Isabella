@@ -5,8 +5,8 @@ import random
 pygame.init()
 
 # Tamanho da tela
-WIDTH = 500
-HEIGHT = 500
+WIDTH = 900
+HEIGHT = 700
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Diamonds Slash')
 
@@ -30,7 +30,7 @@ som_quebra_diamante.set_volume(0.1)
 som_quebra_pedra.set_volume(0.1)
 
 # Carrega imagens
-background_inicio = pygame.image.load(os.path.join(caminho_img, 'background.jpeg')).convert()
+background_inicio = pygame.image.load(os.path.join(caminho_img, 'background.png')).convert()
 background_inicio = pygame.transform.scale(background_inicio, (WIDTH, HEIGHT))
 
 # Cronometro
@@ -47,7 +47,7 @@ menu_tam = pygame.transform.scale(menu, (350, 300))
 orbe_img = pygame.image.load(os.path.join(caminho_img, 'orbe.png')).convert_alpha()
 orbe_img = pygame.transform.scale(orbe_img, (80, 80))
 
-background_jogo = pygame.image.load(os.path.join(caminho_img, 'mina.jpeg')).convert()
+background_jogo = pygame.image.load(os.path.join(caminho_img, 'mina.png')).convert()
 background_jogo = pygame.transform.scale(background_jogo, (WIDTH, HEIGHT))
 
 background_mundos = pygame.image.load(os.path.join(caminho_img, 'fundo_mundos.jpg')).convert()
@@ -121,19 +121,19 @@ pedra_broken_img = pygame.transform.scale(pedra_broken_img, (50, 50))
 
 #mundos
 mundo_planeta_img = pygame.image.load(os.path.join(caminho_img, 'bottao_planeta.png')).convert_alpha()
-mundo_planeta_img = pygame.transform.scale(mundo_planeta_img, (150, 150))
+mundo_planeta_img = pygame.transform.scale(mundo_planeta_img, (200, 200))
 mundo_mistico_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mistico.png')).convert_alpha()
-mundo_mistico_img = pygame.transform.scale(mundo_mistico_img, (150, 150))
+mundo_mistico_img = pygame.transform.scale(mundo_mistico_img, (200, 200))
 mundo_verde_img = pygame.image.load(os.path.join(caminho_img, 'bottao_verde.png')).convert_alpha()
-mundo_verde_img = pygame.transform.scale(mundo_verde_img, (150, 150))
+mundo_verde_img = pygame.transform.scale(mundo_verde_img, (200, 200))
 mundo1_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mundoB.png')).convert_alpha()
-mundo1_img = pygame.transform.scale(mundo1_img, (150, 150))
+mundo1_img = pygame.transform.scale(mundo1_img, (200, 200))
 
 button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 mundo_planeta_rect = mundo_planeta_img.get_rect(center=( 2 *WIDTH // 3, (HEIGHT // 2) + 85))
-mundo_mistico_rect = mundo_mistico_img.get_rect(center=(2 * WIDTH // 3, (HEIGHT // 2) - 100))
+mundo_mistico_rect = mundo_mistico_img.get_rect(center=(2 * WIDTH // 3, (HEIGHT // 2) - 150))
 mundo_verde_rect = mundo_verde_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) + 85))
-mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 100))
+mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 150))
 menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
 
 
