@@ -10,9 +10,24 @@ HEIGHT = 500
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Diamonds Slash')
 
+
 # Caminhos
 caminho_base = os.path.dirname(__file__)
 caminho_img = os.path.join(caminho_base, 'imagens')
+
+#SONS
+pygame.mixer.init()
+
+# Caminho dos sons
+caminho_som = os.path.join(caminho_base, 'sons')
+
+# Sons de quebra
+som_quebra_diamante = pygame.mixer.Sound(os.path.join(caminho_som, 'cristal_quebrando.wav'))
+som_quebra_pedra = pygame.mixer.Sound(os.path.join(caminho_som, 'pedra_quebrando.wav'))
+
+#Ajustando os sons
+som_quebra_diamante.set_volume(0.1)
+som_quebra_pedra.set_volume(0.1)
 
 # Carrega imagens
 background_inicio = pygame.image.load(os.path.join(caminho_img, 'background.jpeg')).convert()
@@ -196,7 +211,11 @@ class Diamante(pygame.sprite.Sprite):
     def quebrar(self):
         self.image = self.image_broken
         self.broken = True
-    
+        # Som correspondente
+        if self.tipo == "pedra":
+            som_quebra_pedra.play()
+        else:
+            som_quebra_diamante.play()
 
 
 game = True
