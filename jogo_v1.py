@@ -124,6 +124,10 @@ mundo_planeta_img = pygame.image.load(os.path.join(caminho_img, 'bottao_planeta.
 mundo_planeta_img = pygame.transform.scale(mundo_planeta_img, (200, 200))
 mundo_mistico_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mistico.png')).convert_alpha()
 mundo_mistico_img = pygame.transform.scale(mundo_mistico_img, (200, 200))
+#bloq
+mundo_mistico_bloq = pygame.image.load(os.path.join(caminho_img, 'mistico_bloq.png')).convert_alpha()
+mundo_mistico_bloq = pygame.transform.scale(mundo_mistico_bloq, (200, 200))
+
 mundo_verde_img = pygame.image.load(os.path.join(caminho_img, 'bottao_verde.png')).convert_alpha()
 mundo_verde_img = pygame.transform.scale(mundo_verde_img, (200, 200))
 mundo1_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mundoB.png')).convert_alpha()
@@ -135,6 +139,13 @@ mundo_mistico_rect = mundo_mistico_img.get_rect(center=(2 * WIDTH // 3, (HEIGHT 
 mundo_verde_rect = mundo_verde_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) + 85))
 mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 150))
 menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
+
+mundos_desbloqueio = {
+    "mundo_planeta": {"custo": 50, "desbloqueado": False},
+    "mundo_mistico": {"custo": 100, "desbloqueado": False},
+    "mundo_verde": {"custo": 75, "desbloqueado": False}
+}
+
 
 
 class Diamante(pygame.sprite.Sprite):
@@ -233,6 +244,10 @@ pontuacao = 0
 moedas_totais = 0  # Total acumulado entre rodadas
 fase_atual = "padrao"
 
+mensagem_mundo = ""
+tempo_mensagem = 0
+
+
 while game:
     clock.tick(FPS)
 
@@ -246,36 +261,66 @@ while game:
                     tela = "selecionar_mundo"
         elif tela == "selecionar_mundo":
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+        # MUNDO PLANETA
                 if mundo_planeta_rect.collidepoint(event.pos):
-                    tela = "jogo"
-                    tempo_inicial = pygame.time.get_ticks()
-                    fase_atual = "mundo_planeta"
-                    moedas_totais += pontuacao
-                    vidas = [True, True, True]
-                    diamantes.empty()
+                    if mundos_desbloqueio["mundo_planeta"]["desbloqueado"]:
+                        tela = "jogo"
+                        fase_atual = "mundo_planeta"
+                        tempo_inicial = pygame.time.get_ticks()
+                        pontuacao = 0
+                        vidas = [True, True, True]
+                        diamantes.empty()
+                    elif moedas_totais >= mundos_desbloqueio["mundo_planeta"]["custo"]:
+                        moedas_totais -= mundos_desbloqueio["mundo_planeta"]["custo"]
+                        mundos_desbloqueio["mundo_planeta"]["desbloqueado"] = True
+                        print("Mundo Planeta desbloqueado!")
+                    else:
+                        print("Moedas insuficientes para desbloquear o Mundo Planeta.")
+
+        # MUNDO MÍSTICO
                 elif mundo_mistico_rect.collidepoint(event.pos):
-                    tela = "jogo"
-                    fase_atual = "mundo_mistico"
-                    tempo_inicial = pygame.time.get_ticks()
-                    moedas_totais += pontuacao
-                    vidas = [True, True, True]
-                    diamantes.empty()
+                    if mundos_desbloqueio["mundo_mistico"]["desbloqueado"]:
+                        tela = "jogo"
+                        fase_atual = "mundo_mistico"
+                        tempo_inicial = pygame.time.get_ticks()
+                        pontuacao = 0
+                        vidas = [True, True, True]
+                        diamantes.empty()
+                    elif moedas_totais >= mundos_desbloqueio["mundo_mistico"]["custo"]:
+                        moedas_totais -= mundos_desbloqueio["mundo_mistico"]["custo"]
+                        mundos_desbloqueio["mundo_mistico"]["desbloqueado"] = True
+                        mensagem_mundo = "Mundo Místico desbloqueado!"
+                        tempo_mensagem = pygame.time.get_ticks()
+                    else:
+                            mensagem_mundo = "Moedas insuficientes para desbloquear o Mundo Místico."
+                            tempo_mensagem = pygame.time.get_ticks()
+                    
+
+        # MUNDO VERDE
                 elif mundo_verde_rect.collidepoint(event.pos):
-                    window.blit(mundo_verde_img, mundo_verde_rect)
+                    if mundos_desbloqueio["mundo_verde"]["desbloqueado"]:
+                        tela = "jogo"
+                        fase_atual = "mundo_verde"
+                        tempo_inicial = pygame.time.get_ticks()
+                        pontuacao = 0
+                        vidas = [True, True, True]
+                        diamantes.empty()
+                    elif moedas_totais >= mundos_desbloqueio["mundo_verde"]["custo"]:
+                        moedas_totais -= mundos_desbloqueio["mundo_verde"]["custo"]
+                        mundos_desbloqueio["mundo_verde"]["desbloqueado"] = True
+                        print("Mundo Verde desbloqueado!")
+                    else:
+                        print("Moedas insuficientes para desbloquear o Mundo Verde.")
+        # MUNDO MINA (sempre desbloqueado)
+                elif mundo1_rect.collidepoint(event.pos):  # supondo que esse botão é o da mina
                     tela = "jogo"
+                    fase_atual = "mina"
                     tempo_inicial = pygame.time.get_ticks()
-                    fase_atual = "mundo_verde"
-                    tempo_inicial = pygame.time.get_ticks()
-                    moedas_totais += pontuacao
+                    pontuacao = 0
                     vidas = [True, True, True]
                     diamantes.empty()
-                elif mundo1_rect.collidepoint(event.pos):
-                    tela = "jogo"
-                    fase_atual = "mundo1"
-                    tempo_inicial = pygame.time.get_ticks()
-                    moedas_totais += pontuacao
-                    vidas = [True, True, True]
-                    diamantes.empty()
+        
                     
         elif tela == "jogo":
             if event.type == SPAWN_EVENT:
@@ -346,13 +391,28 @@ while game:
 
     elif tela == "selecionar_mundo":
         window.blit(background_jogo, (0, 0))
-        window.blit(mundo_planeta_img, mundo_planeta_rect)
-        window.blit(mundo_mistico_img, mundo_mistico_rect)
-        window.blit(mundo_verde_img, mundo_verde_rect)
+
+    # Mundo Planeta
+        if mundos_desbloqueio["mundo_planeta"]["desbloqueado"]:
+            window.blit(mundo_planeta_img, mundo_planeta_rect)
+        #else:
+           #window.blit(mundo_planeta_bloq, mundo_planeta_rect)
+
+    # Mundo Místico
+        if mundos_desbloqueio["mundo_mistico"]["desbloqueado"]:
+            window.blit(mundo_mistico_img, mundo_mistico_rect)
+        else:
+            window.blit(mundo_mistico_bloq, mundo_mistico_rect)
+
+    # Mundo Verde
+        if mundos_desbloqueio["mundo_verde"]["desbloqueado"]:
+            window.blit(mundo_verde_img, mundo_verde_rect)
+        #else:
+            #window.blit(mundo_verde_bloq, mundo_verde_rect)
+
+    # Mundo Mina (sempre desbloqueado, usa apenas 1 imagem)
         window.blit(mundo1_img, mundo1_rect)
-        window.blit(coin_img, (10, 10))
-        texto_moedas_totais = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
-        window.blit(texto_moedas_totais, (60, 15))
+
 
     elif tela == "mundo_planeta":
         window.fill((10, 10, 50))
