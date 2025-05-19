@@ -138,6 +138,16 @@ mundo1_img = pygame.transform.scale(mundo1_img, (200, 200))
 botao_extra_img = pygame.image.load(os.path.join(caminho_img, 'botao_extra.png')).convert_alpha()
 botao_extra_img = pygame.transform.scale(botao_extra_img, (200, 150))
 
+# Imagens dos 3 botões distintos do menu_extra
+botao1_img = pygame.image.load(os.path.join(caminho_img, 'botao1.png')).convert_alpha()
+botao1_img = pygame.transform.scale(botao1_img, (250, 150))
+
+botao2_img = pygame.image.load(os.path.join(caminho_img, 'botao2.png')).convert_alpha()
+botao2_img = pygame.transform.scale(botao2_img, (250, 150))
+
+botao3_img = pygame.image.load(os.path.join(caminho_img, 'botao3.png')).convert_alpha()
+botao3_img = pygame.transform.scale(botao3_img, (250, 150))
+
 button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 mundo_planeta_rect = mundo_planeta_img.get_rect(center=( 2 *WIDTH // 3, (HEIGHT // 2) + 85))
 mundo_mistico_rect = mundo_mistico_img.get_rect(center=(2 * WIDTH // 3, (HEIGHT // 2) - 150))
@@ -145,6 +155,10 @@ mundo_verde_rect = mundo_verde_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) +
 mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 150))
 menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
 botao_extra_rect = botao_extra_img.get_rect(bottomright=(WIDTH - 10, HEIGHT - 10))
+# Rects dos botões do menu extra
+botao1_rect = botao1_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 140))
+botao2_rect = botao2_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+botao3_rect = botao3_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 140))
 
 mundos_desbloqueio = {
     "mundo_planeta": {"custo": 250, "desbloqueado": False},
@@ -217,6 +231,15 @@ class Diamante(pygame.sprite.Sprite):
         else:
             self.rect.x += self.speedx
             self.rect.y += self.speedy
+
+            # Atração ao cursor se ativa
+            if atracao_ativa and self.tipo in ["azul", "vermelho", "verde", "laranja", "roxo"]:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                dx = mouse_x - self.rect.centerx
+                dy = mouse_y - self.rect.centery
+                self.rect.x += int(dx * 0.02)
+                self.rect.y += int(dy * 0.02)
+
             if self.rect.y > HEIGHT:
                 if self.tipo == "pedra":
                     return "remover"
@@ -247,7 +270,8 @@ vidas = [True, True, True]
 pontuacao = 0
 moedas_totais = 0  # Total acumulado entre rodadas
 fase_atual = "padrao"
-
+#POWER UPS 
+atracao_ativa = False
 
 mensagem_mundo = ""
 tempo_mensagem = 0
@@ -394,6 +418,14 @@ while game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     tela = "selecionar_mundo"
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if botao1_rect.collidepoint(event.pos):
+                    atracao_ativa = not atracao_ativa  
+                    print("Atração ativada!" if atracao_ativa else "Atração desativada!")
+                elif botao2_rect.collidepoint(event.pos):
+                    print("Botão 2 clicado!")
+                elif botao3_rect.collidepoint(event.pos):
+                    print("Botão 3 clicado!")
 
     # TELAS
     if tela == "inicio":
@@ -527,8 +559,22 @@ while game:
         window.blit(moed_t, (60, 15))  # Moedas totais 
 
     elif tela == "menu_extra":
-        window.blit(background_jogo, (0, 0)) 
-            
+        window.blit(background_jogo, (0, 0))  # Fundo da tela de mundos
+
+        # Título
+        fonte_titulo = pygame.font.SysFont(None, 48)
+        texto = fonte_titulo.render("POWER UPS", True, (255, 255, 255))
+        window.blit(texto, (WIDTH // 2 - texto.get_width() // 2, 80))
+
+        # Botões com imagens distintas
+        window.blit(botao1_img, botao1_rect)
+        window.blit(botao2_img, botao2_rect)
+        window.blit(botao3_img, botao3_rect)
+
+        # Instrução de retorno
+        sub = pygame.font.SysFont(None, 24).render("Pressione ESC para voltar", True, (180, 180, 180))
+        window.blit(sub, (WIDTH // 2 - sub.get_width() // 2, HEIGHT - 40))
+                
     
     pygame.display.update()
 
