@@ -208,7 +208,7 @@ class Diamante(pygame.sprite.Sprite):
         super().__init__()
 
         chance = random.random() #para a chance dos diamantes serem  definidas 
-        if chance < 0.04: #a orbe te chance de 4% de aparecer 
+        if chance < 0.07: #a orbe te chance de 7% de aparecer 
             self.tipo = "orbe"
             self.image_normal = orbe_img 
             self.image_broken = orbe_img  
@@ -278,7 +278,7 @@ class Diamante(pygame.sprite.Sprite):
                 self.rect.y += int(dy * 0.02)
 
             if self.rect.y > HEIGHT:
-                if self.tipo == "pedra":
+                if self.tipo == "pedra" or self.tipo == "orbe":
                     return "remover"
                 return "fim"
         return None
