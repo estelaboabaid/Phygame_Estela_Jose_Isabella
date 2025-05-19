@@ -172,6 +172,10 @@ botao2_img = pygame.transform.scale(botao2_img, (250, 150))
 botao3_img = pygame.image.load(os.path.join(caminho_img, 'botao3.png')).convert_alpha()
 botao3_img = pygame.transform.scale(botao3_img, (250, 150))
 
+#imagem de fim de jogo 
+fim_img = pygame.image.load(os.path.join(caminho_img, 'fim.png')).convert_alpha()
+fim_img = pygame.transform.scale(fim_img, (500, 500))
+
 #botao de jogar 
 button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 #botao do mundo de planeta 
@@ -589,12 +593,9 @@ while game:
 
     elif tela == "fim":
         window.blit(background_jogo, (0, 0))
-        font = pygame.font.SysFont(None, 48)
-        txt = font.render("Fim de jogo!", True, (255, 255, 255))
-        window.blit(txt, (155, HEIGHT // 2 - 80))
-        window.blit(recomeco, recomeco_rect)
         window.blit(coin_img, (10, 10))
         window.blit(menu_tam, menu_rect)
+        window.blit(fim_img, ((WIDTH//2) -250, 100))
         moed_t = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
         window.blit(moed_t, (60, 15))
         window.blit(moed_t, (60, 15))  # Moedas totais 
