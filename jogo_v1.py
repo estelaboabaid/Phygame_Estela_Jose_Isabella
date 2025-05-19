@@ -124,6 +124,7 @@ mundo_planeta_img = pygame.image.load(os.path.join(caminho_img, 'bottao_planeta.
 mundo_planeta_img = pygame.transform.scale(mundo_planeta_img, (200, 200))
 mundo_mistico_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mistico.png')).convert_alpha()
 mundo_mistico_img = pygame.transform.scale(mundo_mistico_img, (200, 200))
+
 #bloq
 mundo_mistico_bloq = pygame.image.load(os.path.join(caminho_img, 'mistico_bloq.png')).convert_alpha()
 mundo_mistico_bloq = pygame.transform.scale(mundo_mistico_bloq, (200, 200))
@@ -141,53 +142,51 @@ mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 150))
 menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
 
 mundos_desbloqueio = {
-    "mundo_planeta": {"custo": 50, "desbloqueado": False},
-    "mundo_mistico": {"custo": 100, "desbloqueado": False},
-    "mundo_verde": {"custo": 75, "desbloqueado": False}
+    "mundo_planeta": {"custo": 250, "desbloqueado": False},
+    "mundo_mistico": {"custo": 750, "desbloqueado": False},
+    "mundo_verde": {"custo": 1200, "desbloqueado": False}
 }
-
-
 
 class Diamante(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
         chance = random.random()
-        if chance < 0.02:
+        if chance < 0.04:
             self.tipo = "orbe"
             self.image_normal = orbe_img
             self.image_broken = orbe_img  
-            velocidade_extra = 1
-        if chance < 0.08:
+            velocidade_extra = 5
+        elif chance < 0.08:
             self.tipo = "roxo"
             self.image_normal = diamond_roxo_img
             self.image_broken = diamond_roxo_broken_img
-            velocidade_extra = 7
+            velocidade_extra = 10
         elif chance < 0.20:
             self.tipo = "laranja"
             self.image_normal = diamond_laranja_img
             self.image_broken = diamond_laranja_broken_img
-            velocidade_extra = 5
+            velocidade_extra = 7.5
         elif chance < 0.35:
             self.tipo = "verde"
             self.image_normal = diamond_verde_img
             self.image_broken = diamond_verde_broken_img
-            velocidade_extra = 3.5
+            velocidade_extra = 5
         elif chance < 0.50:
             self.tipo = "vermelho"
             self.image_normal = diamond_vermelho_img
             self.image_broken = diamond_vermelho_broken_img
-            velocidade_extra = 3
+            velocidade_extra = 4
         elif chance < 0.75:
             self.tipo = "pedra"
             self.image_normal = pedra_img
             self.image_broken = pedra_broken_img
-            velocidade_extra = 0
+            velocidade_extra = 1
         else:
             self.tipo = "azul"
             self.image_normal = diamond_img
             self.image_broken = diamond_broken_img
-            velocidade_extra = 1
+            velocidade_extra = 2
 
         self.image = self.image_normal
         self.rect = self.image.get_rect()
@@ -327,7 +326,7 @@ while game:
             if event.type == SPAWN_EVENT:
                 diamantes.add(Diamante())
             # Detecção contínua de clique com o mouse sobre diamantes
-        if pygame.mouse.get_pressed()[0]:  # Botão esquerdo pressionado
+        if tela == "jogo" and pygame.mouse.get_pressed()[0]:  # Botão esquerdo pressionado
             mouse_pos = pygame.mouse.get_pos()
             for d in diamantes:
                 if d.rect.collidepoint(mouse_pos) and not d.broken:
@@ -341,9 +340,7 @@ while game:
                                 vidas[i] = False
                                 break
                         if not any(vidas):
-                            moedas_totais += pontuacao
-                            # print("Moedas totais:", moedas_totais)
-                            # print("pontuacao:", pontuacao)
+                            # moedas_totais += pontuacao
                             tela = "fim"
                     elif d.tipo == "vermelho":
                         pontuacao += 5
@@ -370,6 +367,7 @@ while game:
             
 
         if tela == "fim":
+            # moedas_totais += pontuacao
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if recomeco_rect.collidepoint(event.pos):
                     tela = "jogo"

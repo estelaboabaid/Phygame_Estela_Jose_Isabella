@@ -33,3 +33,6 @@
 #### - **Imã de Diamantes**: atrai diamantes automaticamente
 #### - **Tempo Congelado**: pausa os obstáculos por alguns segundos
 #### - **Modo calma diamantes**: reduz a velocidade dos diamantes por tempo limitado
+
+## Como jogar:
+### 
