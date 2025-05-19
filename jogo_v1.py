@@ -134,12 +134,17 @@ mundo_verde_img = pygame.transform.scale(mundo_verde_img, (200, 200))
 mundo1_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mundoB.png')).convert_alpha()
 mundo1_img = pygame.transform.scale(mundo1_img, (200, 200))
 
+# Botão inferior direito na tela de mundos
+botao_extra_img = pygame.image.load(os.path.join(caminho_img, 'botao_extra.png')).convert_alpha()
+botao_extra_img = pygame.transform.scale(botao_extra_img, (200, 150))
+
 button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 mundo_planeta_rect = mundo_planeta_img.get_rect(center=( 2 *WIDTH // 3, (HEIGHT // 2) + 85))
 mundo_mistico_rect = mundo_mistico_img.get_rect(center=(2 * WIDTH // 3, (HEIGHT // 2) - 150))
 mundo_verde_rect = mundo_verde_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) + 85))
 mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 150))
 menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
+botao_extra_rect = botao_extra_img.get_rect(bottomright=(WIDTH - 10, HEIGHT - 10))
 
 mundos_desbloqueio = {
     "mundo_planeta": {"custo": 250, "desbloqueado": False},
@@ -320,7 +325,9 @@ while game:
                     pontuacao = 0
                     vidas = [True, True, True]
                     diamantes.empty()
-        
+
+                elif botao_extra_rect.collidepoint(event.pos):
+                    tela = "menu_extra"
                     
         elif tela == "jogo":
             if event.type == SPAWN_EVENT:
@@ -383,6 +390,11 @@ while game:
             if event.type == pygame.KEYDOWN:
                 tela = "inicio"
 
+        elif tela == "menu_extra":
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    tela = "selecionar_mundo"
+
     # TELAS
     if tela == "inicio":
         window.blit(background_inicio, (0, 0))
@@ -402,6 +414,7 @@ while game:
             window.blit(mundo_planeta_img, mundo_planeta_rect)
         #else:
            #window.blit(mundo_planeta_bloq, mundo_planeta_rect)
+        window.blit(botao_extra_img, botao_extra_rect)
 
     # Mundo Místico
         if mundos_desbloqueio["mundo_mistico"]["desbloqueado"]:
@@ -512,6 +525,9 @@ while game:
         moed_t = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
         window.blit(moed_t, (60, 15))
         window.blit(moed_t, (60, 15))  # Moedas totais 
+
+    elif tela == "menu_extra":
+        window.blit(background_jogo, (0, 0)) 
             
     
     pygame.display.update()
