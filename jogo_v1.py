@@ -244,6 +244,7 @@ pontuacao = 0
 moedas_totais = 0  # Total acumulado entre rodadas
 fase_atual = "padrao"
 
+
 mensagem_mundo = ""
 tempo_mensagem = 0
 
@@ -340,6 +341,9 @@ while game:
                                 vidas[i] = False
                                 break
                         if not any(vidas):
+                            moedas_totais += pontuacao
+                            # print("Moedas totais:", moedas_totais)
+                            # print("pontuacao:", pontuacao)
                             tela = "fim"
                     elif d.tipo == "vermelho":
                         pontuacao += 5
@@ -391,8 +395,11 @@ while game:
 
     elif tela == "selecionar_mundo":
         window.blit(background_jogo, (0, 0))
-
-    # Mundo Planeta
+        # Mostrar moedas totais acumuladas no topo
+        window.blit(coin_img, (10, 10))
+        texto_moedas_totais = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
+        window.blit(texto_moedas_totais, (60, 15))
+        # Mundo Planeta
         if mundos_desbloqueio["mundo_planeta"]["desbloqueado"]:
             window.blit(mundo_planeta_img, mundo_planeta_rect)
         #else:
@@ -448,7 +455,6 @@ while game:
         window.blit(sub, (80, HEIGHT // 2 + 30))
 
     elif tela == "jogo":
-
         if fase_atual == "mundo_planeta":
             window.blit(background_planeta, (0, 0))
         elif fase_atual == "mundo_mistico":
@@ -471,7 +477,7 @@ while game:
                         break
                 diamantes.remove(d)
                 if not any(vidas):
-                    moedas_totais += pontuacao ################################################
+                    moedas_totais += pontuacao
                     tela = "fim"
             else:
                 window.blit(d.image, d.rect)
@@ -484,8 +490,7 @@ while game:
         window.blit(coin_img, (10, 10))
         moed_part = pygame.font.SysFont(None, 36).render(str(pontuacao), True, (255, 255, 0))
         window.blit(moed_part, (60, 15))
-        # texto_pontuacao = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
-        # window.blit(texto_pontuacao, (60, 15))
+
 
         # Desenha cronômetro no topo centralizado
         tempo_passado = pygame.time.get_ticks() - tempo_inicial
@@ -506,7 +511,9 @@ while game:
         window.blit(recomeco, recomeco_rect)
         window.blit(coin_img, (10, 10))
         window.blit(menu_tam, menu_rect)
-        window.blit(moed_part, (60, 15))  # Moedas totais 
+        moed_t = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
+        window.blit(moed_t, (60, 15))
+        window.blit(moed_t, (60, 15))  # Moedas totais 
             
     
     pygame.display.update()
