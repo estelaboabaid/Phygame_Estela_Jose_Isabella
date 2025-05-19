@@ -1,6 +1,8 @@
 import pygame
 import os
 import random
+import sys
+
 
 pygame.init()
 
@@ -8,7 +10,7 @@ pygame.init()
 WIDTH = 900
 HEIGHT = 700
 window = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Diamonds Slash')
+pygame.display.set_caption('Diamonds Slash') #nome do jogo
 
 
 # Caminhos
@@ -47,26 +49,31 @@ menu_tam = pygame.transform.scale(menu, (350, 300))
 orbe_img = pygame.image.load(os.path.join(caminho_img, 'orbe.png')).convert_alpha()
 orbe_img = pygame.transform.scale(orbe_img, (80, 80))
 
+#tela de fundo do mundo 'mina'
 background_jogo = pygame.image.load(os.path.join(caminho_img, 'mina.png')).convert()
 background_jogo = pygame.transform.scale(background_jogo, (WIDTH, HEIGHT))
 
-background_mundos = pygame.image.load(os.path.join(caminho_img, 'fundo_mundos.jpg')).convert()
-background_mundos = pygame.transform.scale(background_mundos, (WIDTH, HEIGHT))
-
+#tela de fundo do mundo mistico 
 background_mistico = pygame.image.load(os.path.join(caminho_img, 'mistico.png')).convert()
 background_mistico = pygame.transform.scale(background_mistico, (WIDTH, HEIGHT))
 
+#tela de fundo do mundo de planetas
 background_planeta = pygame.image.load(os.path.join(caminho_img, 'mundo.png')).convert()
 background_planeta = pygame.transform.scale(background_planeta, (WIDTH, HEIGHT))
 
+#tela de fundo do mundo verde
 background_verde = pygame.image.load(os.path.join(caminho_img, 'mundo_verde.png')).convert()
 background_verde = pygame.transform.scale(background_verde, (WIDTH, HEIGHT))
 
+#botao de jogar 
 button_image = pygame.image.load(os.path.join(caminho_img, 'button.png')).convert_alpha()
 button_image = pygame.transform.scale(button_image, (350, 300))
 
+#imagem do coracao 
 heart_img = pygame.image.load(os.path.join(caminho_img, 'heart_red.png')).convert_alpha()
 heart_img = pygame.transform.scale(heart_img, (40, 40))
+
+#imagem do coracao quebrado 
 heart_broken_img = pygame.image.load(os.path.join(caminho_img, 'heart_broken.png')).convert_alpha()
 heart_broken_img = pygame.transform.scale(heart_broken_img, (40, 40))
 
@@ -79,33 +86,38 @@ recomeco = pygame.image.load(os.path.join(caminho_img, 'restart.png')).convert_a
 recomeco = pygame.transform.scale(recomeco, (210, 100))
 recomeco_rect = recomeco.get_rect(center=(WIDTH // 2, HEIGHT // 1.85))
 
-# Azul
+# diamante azul
 diamond_img = pygame.image.load(os.path.join(caminho_img, 'diamond_blue.png')).convert_alpha()
 diamond_img = pygame.transform.scale(diamond_img, (80, 80))
+#diamante azul quebrado 
 diamond_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamond_blue_broken.png')).convert_alpha()
 diamond_broken_img = pygame.transform.scale(diamond_broken_img, (80, 80))
 
-# Vermelho
+# diamante vermelho
 diamond_vermelho_img = pygame.image.load(os.path.join(caminho_img, 'diamond_vermelho.png')).convert_alpha()
 diamond_vermelho_img = pygame.transform.scale(diamond_vermelho_img, (80, 80))
+#diamante vermelho quebrado 
 diamond_vermelho_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamond_vermelho_broken.png')).convert_alpha()
 diamond_vermelho_broken_img = pygame.transform.scale(diamond_vermelho_broken_img, (80, 80))
 
-# Roxo
+# diamante roxo
 diamond_roxo_img = pygame.image.load(os.path.join(caminho_img, 'diamond_roxo.png')).convert_alpha()
 diamond_roxo_img = pygame.transform.scale(diamond_roxo_img, (80, 80))
+#diamante roxo quebrado 
 diamond_roxo_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamond_roxo_broken.png')).convert_alpha()
 diamond_roxo_broken_img = pygame.transform.scale(diamond_roxo_broken_img, (80, 80))
 
-# Laranja
+# diamante laranja
 diamond_laranja_img = pygame.image.load(os.path.join(caminho_img, 'diamond_laranja.png')).convert_alpha()
 diamond_laranja_img = pygame.transform.scale(diamond_laranja_img, (80, 80))
+#diamante laranja quebrado
 diamond_laranja_broken_img = pygame.image.load(os.path.join(caminho_img, 'broken_laranja.png')).convert_alpha()
 diamond_laranja_broken_img = pygame.transform.scale(diamond_laranja_broken_img, (80, 80))
 
-# Verde
+# diamante verde
 diamond_verde_img = pygame.image.load(os.path.join(caminho_img, 'diamante_verde.png')).convert_alpha()
 diamond_verde_img = pygame.transform.scale(diamond_verde_img, (80, 80))
+#diamante verde quebrado 
 diamond_verde_broken_img = pygame.image.load(os.path.join(caminho_img, 'diamons_verde_broken.png')).convert_alpha()
 diamond_verde_broken_img = pygame.transform.scale(diamond_verde_broken_img, (80, 80))
 
@@ -116,23 +128,35 @@ coin_img = pygame.transform.scale(coin_img, (40, 40))
 # Pedra
 pedra_img = pygame.image.load(os.path.join(caminho_img, 'pedra.png')).convert_alpha()
 pedra_img = pygame.transform.scale(pedra_img, (50, 50))
+#pedra quebrada 
 pedra_broken_img = pygame.image.load(os.path.join(caminho_img, 'pedra_broken.png')).convert_alpha()
 pedra_broken_img = pygame.transform.scale(pedra_broken_img, (50, 50))
 
-#mundos
+
+#botao do mundo planeta 
 mundo_planeta_img = pygame.image.load(os.path.join(caminho_img, 'bottao_planeta.png')).convert_alpha()
 mundo_planeta_img = pygame.transform.scale(mundo_planeta_img, (200, 200))
+#botao do mundo mistico 
 mundo_mistico_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mistico.png')).convert_alpha()
 mundo_mistico_img = pygame.transform.scale(mundo_mistico_img, (200, 200))
-
-#bloq
-mundo_mistico_bloq = pygame.image.load(os.path.join(caminho_img, 'mistico_bloq.png')).convert_alpha()
-mundo_mistico_bloq = pygame.transform.scale(mundo_mistico_bloq, (200, 200))
-
+#botao do mundo verde  
 mundo_verde_img = pygame.image.load(os.path.join(caminho_img, 'bottao_verde.png')).convert_alpha()
 mundo_verde_img = pygame.transform.scale(mundo_verde_img, (200, 200))
+#botao do mundo mina 
 mundo1_img = pygame.image.load(os.path.join(caminho_img, 'bottao_mundoB.png')).convert_alpha()
 mundo1_img = pygame.transform.scale(mundo1_img, (200, 200))
+
+
+#botao do mundo mistico bloqueado 
+mundo_mistico_bloq = pygame.image.load(os.path.join(caminho_img, 'mistico_bloq.png')).convert_alpha()
+mundo_mistico_bloq = pygame.transform.scale(mundo_mistico_bloq, (200, 200))
+#botao do mundo planeta bloqueado 
+mundo_planeta_bloq = pygame.image.load(os.path.join(caminho_img, 'planeta_bloq.png')).convert_alpha()
+mundo_planeta_bloq = pygame.transform.scale(mundo_planeta_bloq, (200, 200))
+#botao do mundo verde bloqueado 
+mundo_verde_bloq = pygame.image.load(os.path.join(caminho_img, 'verde_bloq.png')).convert_alpha()
+mundo_verde_bloq = pygame.transform.scale(mundo_verde_bloq, (200, 200))
+
 
 # Botão inferior direito na tela de mundos
 botao_extra_img = pygame.image.load(os.path.join(caminho_img, 'botao_extra.png')).convert_alpha()
@@ -148,11 +172,17 @@ botao2_img = pygame.transform.scale(botao2_img, (250, 150))
 botao3_img = pygame.image.load(os.path.join(caminho_img, 'botao3.png')).convert_alpha()
 botao3_img = pygame.transform.scale(botao3_img, (250, 150))
 
+#botao de jogar 
 button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
+#botao do mundo de planeta 
 mundo_planeta_rect = mundo_planeta_img.get_rect(center=( 2 *WIDTH // 3, (HEIGHT // 2) + 85))
+#botao do mundo mistico 
 mundo_mistico_rect = mundo_mistico_img.get_rect(center=(2 * WIDTH // 3, (HEIGHT // 2) - 150))
+#botao do mundo verde 
 mundo_verde_rect = mundo_verde_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) + 85))
+#botao do mundo verde 
 mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 150))
+#botao do menu 
 menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
 botao_extra_rect = botao_extra_img.get_rect(bottomright=(WIDTH - 10, HEIGHT - 10))
 # Rects dos botões do menu extra
@@ -160,48 +190,51 @@ botao1_rect = botao1_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 140))
 botao2_rect = botao2_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 botao3_rect = botao3_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 140))
 
+
+#dicionario com os custos dos mundos
 mundos_desbloqueio = {
     "mundo_planeta": {"custo": 250, "desbloqueado": False},
     "mundo_mistico": {"custo": 750, "desbloqueado": False},
     "mundo_verde": {"custo": 1200, "desbloqueado": False}
 }
 
+#classe de diamante 
 class Diamante(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        chance = random.random()
-        if chance < 0.04:
+        chance = random.random() #para a chance dos diamantes serem  definidas 
+        if chance < 0.04: #a orbe te chance de 4% de aparecer 
             self.tipo = "orbe"
-            self.image_normal = orbe_img
+            self.image_normal = orbe_img 
             self.image_broken = orbe_img  
-            velocidade_extra = 5
-        elif chance < 0.08:
+            velocidade_extra = 5 #aumenta a velocidade 
+        elif chance < 0.08: #chance de 8% de aparecer o diamante roxo 
             self.tipo = "roxo"
             self.image_normal = diamond_roxo_img
             self.image_broken = diamond_roxo_broken_img
             velocidade_extra = 10
-        elif chance < 0.20:
+        elif chance < 0.20: #chance de 20% de aparecer o diamante laranja 
             self.tipo = "laranja"
             self.image_normal = diamond_laranja_img
             self.image_broken = diamond_laranja_broken_img
             velocidade_extra = 7.5
-        elif chance < 0.35:
+        elif chance < 0.35: #chance de 35% de aparecer o diamante verde
             self.tipo = "verde"
             self.image_normal = diamond_verde_img
             self.image_broken = diamond_verde_broken_img
             velocidade_extra = 5
-        elif chance < 0.50:
+        elif chance < 0.50: #chance de 50% de aparecer o diamante vermelho
             self.tipo = "vermelho"
             self.image_normal = diamond_vermelho_img
             self.image_broken = diamond_vermelho_broken_img
             velocidade_extra = 4
-        elif chance < 0.75:
+        elif chance < 0.75: #chance de 75% de aparecer a pedra 
             self.tipo = "pedra"
             self.image_normal = pedra_img
             self.image_broken = pedra_broken_img
             velocidade_extra = 1
-        else:
+        else: # o resto é o azul 
             self.tipo = "azul"
             self.image_normal = diamond_img
             self.image_broken = diamond_broken_img
@@ -300,12 +333,14 @@ while game:
                         pontuacao = 0
                         vidas = [True, True, True]
                         diamantes.empty()
+    
                     elif moedas_totais >= mundos_desbloqueio["mundo_planeta"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_planeta"]["custo"]
                         mundos_desbloqueio["mundo_planeta"]["desbloqueado"] = True
-                        print("Mundo Planeta desbloqueado!")
                     else:
-                        print("Moedas insuficientes para desbloquear o Mundo Planeta.")
+                        mensagem_mundo = "Moedas insuficientes, mundo bloqueado!"
+                        tempo_mensagem = pygame.time.get_ticks()
+
 
         # MUNDO MÍSTICO
                 elif mundo_mistico_rect.collidepoint(event.pos):
@@ -322,8 +357,8 @@ while game:
                         mensagem_mundo = "Mundo Místico desbloqueado!"
                         tempo_mensagem = pygame.time.get_ticks()
                     else:
-                            mensagem_mundo = "Moedas insuficientes para desbloquear o Mundo Místico."
-                            tempo_mensagem = pygame.time.get_ticks()
+                        mensagem_mundo = "Moedas insuficientes, mundo bloqueado."
+                        tempo_mensagem = pygame.time.get_ticks()
                     
 
         # MUNDO VERDE
@@ -338,9 +373,9 @@ while game:
                     elif moedas_totais >= mundos_desbloqueio["mundo_verde"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_verde"]["custo"]
                         mundos_desbloqueio["mundo_verde"]["desbloqueado"] = True
-                        print("Mundo Verde desbloqueado!")
                     else:
-                        print("Moedas insuficientes para desbloquear o Mundo Verde.")
+                        mensagem_mundo = "Moedas insuficientes, mundo bloqueado!"
+                        tempo_mensagem = pygame.time.get_ticks()
         # MUNDO MINA (sempre desbloqueado)
                 elif mundo1_rect.collidepoint(event.pos):  # supondo que esse botão é o da mina
                     tela = "jogo"
@@ -444,8 +479,8 @@ while game:
         # Mundo Planeta
         if mundos_desbloqueio["mundo_planeta"]["desbloqueado"]:
             window.blit(mundo_planeta_img, mundo_planeta_rect)
-        #else:
-           #window.blit(mundo_planeta_bloq, mundo_planeta_rect)
+        else:
+           window.blit(mundo_planeta_bloq, mundo_planeta_rect)
         window.blit(botao_extra_img, botao_extra_rect)
 
     # Mundo Místico
@@ -457,11 +492,17 @@ while game:
     # Mundo Verde
         if mundos_desbloqueio["mundo_verde"]["desbloqueado"]:
             window.blit(mundo_verde_img, mundo_verde_rect)
-        #else:
-            #window.blit(mundo_verde_bloq, mundo_verde_rect)
+        else:
+            window.blit(mundo_verde_bloq, mundo_verde_rect)
 
-    # Mundo Mina (sempre desbloqueado, usa apenas 1 imagem)
+    # Mundo Mina (sempre desbloqueado)
         window.blit(mundo1_img, mundo1_rect)
+        # Exibe mensagem de erro por 2 segundos na tela de seleção de mundos
+        if mensagem_mundo and pygame.time.get_ticks() - tempo_mensagem < 2000:
+            fonte_mensagem = pygame.font.SysFont(None, 36)
+            texto_mensagem = fonte_mensagem.render(mensagem_mundo, True, (200, 200, 200))
+            window.blit(texto_mensagem, ((WIDTH - texto_mensagem.get_width()) // 2, HEIGHT - 60))
+
 
 
     elif tela == "mundo_planeta":
@@ -575,7 +616,7 @@ while game:
         sub = pygame.font.SysFont(None, 24).render("Pressione ESC para voltar", True, (180, 180, 180))
         window.blit(sub, (WIDTH // 2 - sub.get_width() // 2, HEIGHT - 40))
                 
-    
+
     pygame.display.update()
 
 pygame.quit()
