@@ -195,6 +195,11 @@ botao1_rect = botao1_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 140))
 botao2_rect = botao2_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 botao3_rect = botao3_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 140))
 
+#botao info 
+botao_info = pygame.image.load(os.path.join(caminho_img, 'info.png')).convert_alpha()
+botao_info = pygame.transform.scale(botao_info, (250, 150))
+info_rect = botao_info.get_rect(center=(WIDTH // 2, HEIGHT // 2 +250))
+
 
 #dicionario com os custos dos mundos, e define eles como bloqueados, sendo apenas desbloqueados quando o jogador compra
 mundos_desbloqueio = {
@@ -202,6 +207,29 @@ mundos_desbloqueio = {
     "mundo_mistico": {"custo": 750, "desbloqueado": False},
     "mundo_verde": {"custo": 1000, "desbloqueado": False}
 }
+
+#variaveis para o controle de tela 
+sequencia_info = False
+indice_tela_info = 0
+tempo_tela_info = 0
+total_telas_info = 6
+
+#fotos de info 
+# Imagens da sequência de info
+foto1 = pygame.image.load(os.path.join(caminho_img, 'foto1.png')).convert_alpha()
+foto1 = pygame.transform.scale(foto1, (WIDTH, HEIGHT))
+foto2 = pygame.image.load(os.path.join(caminho_img, 'foto2.png')).convert_alpha()
+foto2 = pygame.transform.scale(foto2, (WIDTH, HEIGHT))
+foto3 = pygame.image.load(os.path.join(caminho_img, 'foto3.png')).convert_alpha()
+foto3 = pygame.transform.scale(foto3, (WIDTH, HEIGHT))
+foto4 = pygame.image.load(os.path.join(caminho_img, 'foto4.png')).convert_alpha()
+foto4 = pygame.transform.scale(foto4, (WIDTH, HEIGHT))
+foto5 = pygame.image.load(os.path.join(caminho_img, 'foto5.png')).convert_alpha()
+foto5 = pygame.transform.scale(foto5, (WIDTH, HEIGHT))
+foto6 = pygame.image.load(os.path.join(caminho_img, 'foto6.png')).convert_alpha()
+foto6 = pygame.transform.scale(foto6, (WIDTH, HEIGHT))
+fotos_info = [foto1, foto2, foto3, foto4, foto5, foto6]
+
 
 #classe de diamante 
 class Diamante(pygame.sprite.Sprite):
@@ -314,20 +342,30 @@ mensagem_mundo = ""
 tempo_mensagem = 0
 
 while game:
-    clock.tick(FPS) #tempo de atualização do jogo
+    clock.tick(FPS)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game = False
+        # tudo que você já tem...
 
-        if tela == "inicio": #quando a tela for a de inicio ocorrera a opção de clicar no botão para iniciar o jogo	no mundo selecionado
+        if tela == "inicio":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
                     tela = "selecionar_mundo"
-        elif tela == "selecionar_mundo": 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+                elif info_rect.collidepoint(event.pos):
+                    tela = "info"
+                    indice_tela_info = 0
+                    tempo_tela_info = pygame.time.get_ticks()
 
+
+
+
+
+        ######
         # MUNDO PLANETA
+        elif tela == "selecionar_mundo":
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if mundo_planeta_rect.collidepoint(event.pos):
                     if mundos_desbloqueio["mundo_planeta"]["desbloqueado"]:  # se o mundo estiver desbloqueado o jogo pode comecar 
                         tela = "jogo"
@@ -423,6 +461,8 @@ while game:
                     else:
                         pontuacao += 1
 
+        
+            #####
             # Tempo restante
             tempo_passado = pygame.time.get_ticks() - tempo_inicial
             tempo_restante = max(0, (tempo_total - tempo_passado) // 1000)  # em segundos
@@ -465,13 +505,29 @@ while game:
                 elif botao3_rect.collidepoint(event.pos):
                     print("Botão 3 clicado!")
 
+
+    if tela == "info":
+            window.blit(fotos_info[indice_tela_info], (0, 0))
+
+            if pygame.time.get_ticks() - tempo_tela_info >= 1000:
+                indice_tela_info += 1
+                tempo_tela_info = pygame.time.get_ticks()
+                if indice_tela_info >= total_telas_info:
+                    sequencia_info = False
+                    tela = "inicio"
     # TELAS
     if tela == "inicio":
         window.blit(background_inicio, (0, 0))
         window.blit(button_image, button_rect)
+
+    # Mostra botão Info
+        window.blit(botao_info, info_rect)
+
+    # Mostrar moedas
         window.blit(coin_img, (10, 10))
         texto_moedas = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
         window.blit(texto_moedas, (60, 15))
+
 
     elif tela == "selecionar_mundo":  #Parte do codigo aonde desenha os icones na tela de selecionar o mundo 
         window.blit(background_jogo, (0, 0))
