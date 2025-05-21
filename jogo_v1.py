@@ -3,7 +3,6 @@ import os
 import random
 import sys
 
-
 pygame.init()
 
 # Tamanho da tela
@@ -77,9 +76,8 @@ heart_img = pygame.transform.scale(heart_img, (40, 40))
 heart_broken_img = pygame.image.load(os.path.join(caminho_img, 'heart_broken.png')).convert_alpha()
 heart_broken_img = pygame.transform.scale(heart_broken_img, (40, 40))
 
-# Picareta iniciante
-picareta_ini = pygame.image.load(os.path.join(caminho_img, 'picareta_iniciante.png')).convert_alpha()
-picareta_ini = pygame.transform.scale(picareta_ini, (70, 70))
+# Picareta 
+picareta = pygame.image.load(os.path.join(caminho_img, 'picareta_animacao.png')).convert_alpha()  # Faz com que a picareta tenha as dimensões certas para a animação
 
 # Simbolo de restart
 recomeco = pygame.image.load(os.path.join(caminho_img, 'restart.png')).convert_alpha()
@@ -190,6 +188,7 @@ mundo1_rect = mundo1_img.get_rect(center=( WIDTH // 3, (HEIGHT // 2) - 150))
 #botao do menu 
 menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
 botao_extra_rect = botao_extra_img.get_rect(bottomright=(WIDTH - 10, HEIGHT - 10))
+
 # Rects dos botões do menu extra
 botao1_rect = botao1_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 140))
 botao2_rect = botao2_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
@@ -321,6 +320,31 @@ class Diamante(pygame.sprite.Sprite):
         else:
             som_quebra_diamante.play()
 
+# Inicia uma classe para a animação da picareta
+class Machado(pygame.sprite.Sprite):
+    def __init__(self, x, y, img_picareta):  # Recebe os comandos do tamanho da picareta
+        super().__init__()
+        self.image = img_picareta
+        self.animacao = False
+        self.frame_atual = 0
+        tamanho = (110, 110)  
+        self.frames = [pygame.transform.scale(pygame.image.load(os.path.join(caminho_img, "ax1.png")).convert_alpha(), tamanho),                  
+    pygame.transform.scale(pygame.image.load(os.path.join(caminho_img, "ax2.png")).convert_alpha(), tamanho)]
+        self.rect = self.frames[0].get_rect()
+        self.rect.center = (WIDTH // 2, HEIGHT // 2)
+        
+    def iniciar_animacao(self):  # Define como True para iniciar a animação
+        self.animacao = True
+
+    def update(self):  # Parte muda a animação de acordo com o que esta no loop
+        if self.animacao:
+            self.frame_atual = 1
+        else:
+            self.frame_atual = 0
+        
+        self.rect.center = pygame.mouse.get_pos()
+        self.image = self.frames[self.frame_atual]
+
 game = True
 tela = "inicio"
 clock = pygame.time.Clock()
@@ -328,7 +352,7 @@ FPS = 30
 
 diamantes = pygame.sprite.Group()
 SPAWN_EVENT = pygame.USEREVENT + 1
-pygame.time.set_timer(SPAWN_EVENT, 1200)
+pygame.time.set_timer(SPAWN_EVENT, 600)  # Fala de quanto em quanto tempo o diamante ira aparecer
 
 vidas = [True, True, True]  # define as vidas como verdadeiras, que mostra que o jogador tem vidas
 pontuacao = 0  # inicia a pontuação como 0
@@ -341,6 +365,11 @@ atracao_ativa = False
 mensagem_mundo = ""
 tempo_mensagem = 0
 
+machado_sprite = Machado(100, 500, picareta)
+grupo_sprites = pygame.sprite.Group()
+grupo_sprites.add(machado_sprite)
+
+# Loop principal
 while game:
     clock.tick(FPS)
 
@@ -358,11 +387,6 @@ while game:
                     indice_tela_info = 0
                     tempo_tela_info = pygame.time.get_ticks()
 
-
-
-
-
-        ######
         # MUNDO PLANETA
         elif tela == "selecionar_mundo":
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -433,9 +457,22 @@ while game:
             if event.type == SPAWN_EVENT:
                 diamantes.add(Diamante())
             # Detecção contínua de clique com o mouse sobre diamantes
-            
-        if tela == "jogo" and pygame.mouse.get_pressed()[0]:  
+        
+        # Traz o resultado do evento de clique do mouse, para a animação
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            machado_sprite.animacao = True
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            machado_sprite.animacao = False
+                
+
+
+        if tela == "jogo" and pygame.mouse.get_pressed()[0]:  # Evento do botão esquerdo do mouse eo que acontece
+            machado_sprite.rect.center = pygame.mouse.get_pos()
             mouse_pos = pygame.mouse.get_pos()
+            grupo_sprites.draw(window)
+            grupo_sprites.update()
+
             for d in diamantes:
                 if d.rect.collidepoint(mouse_pos) and not d.broken:
                     d.quebrar()
@@ -448,7 +485,7 @@ while game:
                                 vidas[i] = False
                                 break
                         if not any(vidas):
-                            # moedas_totais += pontuacao
+                            moedas_totais += pontuacao
                             tela = "fim"
                     elif d.tipo == "vermelho":
                         pontuacao += 5
@@ -462,7 +499,6 @@ while game:
                         pontuacao += 1
 
         
-            #####
             # Tempo restante
             tempo_passado = pygame.time.get_ticks() - tempo_inicial
             tempo_restante = max(0, (tempo_total - tempo_passado) // 1000)  # em segundos
@@ -509,7 +545,7 @@ while game:
     if tela == "info":
             window.blit(fotos_info[indice_tela_info], (0, 0))
 
-            if pygame.time.get_ticks() - tempo_tela_info >= 1000:
+            if pygame.time.get_ticks() - tempo_tela_info >= 2000:
                 indice_tela_info += 1
                 tempo_tela_info = pygame.time.get_ticks()
                 if indice_tela_info >= total_telas_info:
@@ -671,8 +707,9 @@ while game:
         largura_texto = texto_tempo.get_width()
         window.blit(texto_tempo, ((WIDTH - largura_texto) // 2, 10))
         # Desenha picareta
-        pos_mouse = pygame.mouse.get_pos()
-        window.blit(picareta_ini, pos_mouse)
+        grupo_sprites.update()
+        machado_sprite.rect.center = pygame.mouse.get_pos()
+        window.blit(machado_sprite.image, machado_sprite.rect)
 
 
     elif tela == "fim":
