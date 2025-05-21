@@ -43,7 +43,6 @@ tempo_total = 60 * 1000  # 60 segundos em milissegundos
 menu = pygame.image.load(os.path.join(caminho_img, 'menu_bottao.png')).convert_alpha()
 menu_tam = pygame.transform.scale(menu, (350, 300))
 
-
 # Orbe amaldiçoado
 orbe_img = pygame.image.load(os.path.join(caminho_img, 'orbe.png')).convert_alpha()
 orbe_img = pygame.transform.scale(orbe_img, (80, 80))
@@ -66,7 +65,7 @@ background_verde = pygame.transform.scale(background_verde, (WIDTH, HEIGHT))
 
 #botao de jogar 
 button_image = pygame.image.load(os.path.join(caminho_img, 'button.png')).convert_alpha()
-button_image = pygame.transform.scale(button_image, (350, 300))
+button_image = pygame.transform.scale(button_image, (350, 100))
 
 #imagem do coracao 
 heart_img = pygame.image.load(os.path.join(caminho_img, 'heart_red.png')).convert_alpha()
@@ -211,7 +210,7 @@ mundos_desbloqueio = {
 sequencia_info = False
 indice_tela_info = 0
 tempo_tela_info = 0
-total_telas_info = 6
+total_telas_info = 17
 
 #fotos de info 
 # Imagens da sequência de info
@@ -227,7 +226,29 @@ foto5 = pygame.image.load(os.path.join(caminho_img, 'foto5.png')).convert_alpha(
 foto5 = pygame.transform.scale(foto5, (WIDTH, HEIGHT))
 foto6 = pygame.image.load(os.path.join(caminho_img, 'foto6.png')).convert_alpha()
 foto6 = pygame.transform.scale(foto6, (WIDTH, HEIGHT))
-fotos_info = [foto1, foto2, foto3, foto4, foto5, foto6]
+foto7 = pygame.image.load(os.path.join(caminho_img, 'foto7.png')).convert_alpha()
+foto7 = pygame.transform.scale(foto7, (WIDTH, HEIGHT))
+foto8 = pygame.image.load(os.path.join(caminho_img, 'foto8.png')).convert_alpha()
+foto8 = pygame.transform.scale(foto8, (WIDTH, HEIGHT))
+foto9 = pygame.image.load(os.path.join(caminho_img, 'foto9.png')).convert_alpha()
+foto9 = pygame.transform.scale(foto9, (WIDTH, HEIGHT))
+foto10 = pygame.image.load(os.path.join(caminho_img, 'foto10.png')).convert_alpha()
+foto10 = pygame.transform.scale(foto10, (WIDTH, HEIGHT))
+foto11 = pygame.image.load(os.path.join(caminho_img, 'foto11.png')).convert_alpha()
+foto11 = pygame.transform.scale(foto11, (WIDTH, HEIGHT))
+foto12 = pygame.image.load(os.path.join(caminho_img, 'foto12.png')).convert_alpha()
+foto12 = pygame.transform.scale(foto12, (WIDTH, HEIGHT))
+foto13 = pygame.image.load(os.path.join(caminho_img, 'foto13.png')).convert_alpha()
+foto13 = pygame.transform.scale(foto13, (WIDTH, HEIGHT))
+foto14 = pygame.image.load(os.path.join(caminho_img, 'foto14.png')).convert_alpha()
+foto14 = pygame.transform.scale(foto14, (WIDTH, HEIGHT))
+foto15 = pygame.image.load(os.path.join(caminho_img, 'foto15.png')).convert_alpha()
+foto15 = pygame.transform.scale(foto15, (WIDTH, HEIGHT))
+foto16 = pygame.image.load(os.path.join(caminho_img, 'foto16.png')).convert_alpha()
+foto16 = pygame.transform.scale(foto16, (WIDTH, HEIGHT))
+foto17 = pygame.image.load(os.path.join(caminho_img, 'foto17.png')).convert_alpha()
+foto17 = pygame.transform.scale(foto17, (WIDTH, HEIGHT))
+fotos_info = [foto1, foto2, foto3, foto4, foto5, foto6, foto7, foto8, foto9, foto10, foto11, foto12, foto13, foto14, foto15, foto16, foto17]
 
 
 #classe de diamante 
@@ -542,20 +563,29 @@ while game:
                     print("Botão 3 clicado!")
 
 
-    if tela == "info":
-            window.blit(fotos_info[indice_tela_info], (0, 0))
+    if tela == "info": #tela atual de informacoes 
+            window.blit(fotos_info[indice_tela_info], (0, 0)) #desenha a imagem na posicao 0,0
 
-            if pygame.time.get_ticks() - tempo_tela_info >= 2000:
-                indice_tela_info += 1
-                tempo_tela_info = pygame.time.get_ticks()
-                if indice_tela_info >= total_telas_info:
-                    sequencia_info = False
-                    tela = "inicio"
+            #define o tempo de exibicao dependendo da imagem 
+            if indice_tela_info >= total_telas_info -2: #se tiver nas duas ultimas imagens 
+                tempo_exibicao = 2000 #o tempo é de 2 segundo 
+            else: #no resto das imagens 
+                tempo_exibicao = 200# otempo de exibicao é 0.2 segundos 
+
+            #verifica se ja passou o tempo necessario pra trocar de imagem
+            if pygame.time.get_ticks() - tempo_tela_info >= tempo_exibicao:
+                indice_tela_info += 1#passa pra proxima imagem
+                tempo_tela_info = pygame.time.get_ticks()#atualiza o tempo de referencia para a proxima troca de imagem
+                if indice_tela_info >= total_telas_info: #se ja mostrou todas as imagens
+                    sequencia_info = False #termina a sequencia das fotos de informacao 
+                    tela = "inicio" #volta parar a tela inicial 
+            
+
     # TELAS
     if tela == "inicio":
         window.blit(background_inicio, (0, 0))
         window.blit(button_image, button_rect)
-
+        
     # Mostra botão Info
         window.blit(botao_info, info_rect)
 
