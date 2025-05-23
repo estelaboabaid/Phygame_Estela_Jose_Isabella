@@ -202,7 +202,7 @@ info_rect = botao_info.get_rect(center=(WIDTH // 2, HEIGHT // 2 +250))
 #dicionario com os custos dos mundos, e define eles como bloqueados, sendo apenas desbloqueados quando o jogador compra
 mundos_desbloqueio = {
     "mundo_planeta": {"custo": 250, "desbloqueado": False},
-    "mundo_mistico": {"custo": 750, "desbloqueado": False},
+    "mundo_mistico": {"custo": 500, "desbloqueado": False},
     "mundo_verde": {"custo": 1000, "desbloqueado": False}
 }
 

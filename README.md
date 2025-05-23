@@ -24,15 +24,39 @@
 #### -**Roxo** = 15 moedas
 
 #### Cenarios:
-#### -**Basico** = Mina
-#### -**Intermediario** = Floresta mistica
-#### -**Avançado** = Planeta azul
-#### -**Lendario** = Extraplaneta
+#### -**Inicial** = Mina 
+#### -**Intermediario** = Planeta (250 moedas)
+#### -**Avançado** = Planeta azul (500 moedas)
+#### -**Lendario** = Floresta verde (1000 moedas)
 
 #### Powers-ups:
 #### - **Imã de Diamantes**: atrai diamantes automaticamente
 #### - **Tempo Congelado**: pausa os obstáculos por alguns segundos
 #### - **Modo calma diamantes**: reduz a velocidade dos diamantes por tempo limitado
 
-## Como jogar:
-### 
+## Como Jogar:
+## Primeiramente abrir o arquivo "jogo_v1.py" e rodar o codigo. Após:
+
+### 1- Verifique as Informações Iniciais
+#### Ao iniciar o jogo, é exibida uma tela com informações visuais explicando a dinâmica. É importante observá-las para entender como o jogo funciona.
+
+### 2- Clique em “Jogar”
+#### Após conferir as instruções, clique no botão "Jogar" e selecione um dos mundos disponíveis (desbloqueados).
+
+### 3- Objetivo do Jogo
+#### A partida começará. Seu objetivo é usar o machado para quebrar os diamantes que surgirem na tela, acumulando o máximo de pontos possível em 1 minuto, sem perder todas as vidas.
+### Você perde 1 vida se:
+#### - Deixar um diamante cair sem quebrá-lo;
+#### - Quebrar uma pedra.
+### E perde todas as vidas de uma vez se:
+#### - Quebrar uma orbe.
+
+### 4- Como Coletar os Diamantes
+#### Você pode coletar diamantes clicando neles ou pressionando o botão esquerdo do mouse e passando o cursor por cima.
+#### Atenção: passar o mouse por cima de uma pedra ou orbe também fará com que elas sejam destruídas.
+
+### 5- Pontuação e Moedas
+### #Ao final de cada partida, sua pontuação será convertida em moedas totais, que poderão ser usadas para desbloquear novos mundos. Ao comprar um mundo, a quantidade correspondente de moedas será descontada.
+
+### 6- Power-ups
+#### Durante o jogo, power-ups podem aparecer aleatoriamente. Eles concedem vantagens temporárias que facilitam sua jornada por algumas rodadas.
