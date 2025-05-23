@@ -390,6 +390,13 @@ fase_atual = "padrao" # Fase padrão, para evitar erro de referência antes de s
 #POWER UPS 
 atracao_ativa = False
 
+#TEMPO ATRACAO E STATUS 
+atracao_duracao = 5000  # 5 segundos em milissegundos
+tempo_atracao_ativada = 0
+vezes_usadas_atracao = 0
+vezes_maximas = 3
+
+
 mensagem_mundo = ""
 tempo_mensagem = 0
 
@@ -425,7 +432,8 @@ while game:
                         tempo_inicial = pygame.time.get_ticks() #inicia o tempo do jogo
                         pontuacao = 0
                         vidas = [True, True, True] #faz com que as vidas sejam verdadeiras
-                        diamantes.empty() 
+                        diamantes.empty()
+                        vezes_usadas_atracao = 0
     
                     elif moedas_totais >= mundos_desbloqueio["mundo_planeta"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_planeta"]["custo"]
@@ -444,6 +452,7 @@ while game:
                         pontuacao = 0
                         vidas = [True, True, True]
                         diamantes.empty()
+                        vezes_usadas_atracao = 0
                     elif moedas_totais >= mundos_desbloqueio["mundo_mistico"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_mistico"]["custo"]
                         mundos_desbloqueio["mundo_mistico"]["desbloqueado"] = True
@@ -463,6 +472,7 @@ while game:
                         pontuacao = 0
                         vidas = [True, True, True]
                         diamantes.empty()
+                        vezes_usadas_atracao = 0
                     elif moedas_totais >= mundos_desbloqueio["mundo_verde"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_verde"]["custo"]
                         mundos_desbloqueio["mundo_verde"]["desbloqueado"] = True
@@ -477,6 +487,7 @@ while game:
                     pontuacao = 0
                     vidas = [True, True, True]
                     diamantes.empty()
+                    vezes_usadas_atracao = 0
 
                 elif botao_extra_rect.collidepoint(event.pos):
                     tela = "menu_extra"
@@ -485,6 +496,11 @@ while game:
             if event.type == SPAWN_EVENT:
                 diamantes.add(Diamante())
             # Detecção contínua de clique com o mouse sobre diamantes
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e and vezes_usadas_atracao < vezes_maximas:
+                    atracao_ativa = True
+                    tempo_atracao_ativada = pygame.time.get_ticks()
+                    vezes_usadas_atracao += 1
         
         # Traz o resultado do evento de clique do mouse, para a animação
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -548,6 +564,7 @@ while game:
                     tempo_inicial = pygame.time.get_ticks()
                     pontuacao = 0
                     diamantes.empty()
+                    vezes_usadas_atracao = 0
                 elif menu_rect.collidepoint(event.pos):
                     tela = "selecionar_mundo"
 
@@ -710,6 +727,16 @@ while game:
             window.blit(background_jogo, (0, 0))
         else:
             window.blit(background_jogo, (0, 0))
+        if atracao_ativa:
+            overlay_azul = pygame.Surface((WIDTH, HEIGHT))
+            overlay_azul.set_alpha(50)
+            overlay_azul.fill((0, 0, 255))
+            window.blit(overlay_azul, (0, 0))
+
+            overlay_vermelho = pygame.Surface((WIDTH, HEIGHT))
+            overlay_vermelho.set_alpha(50)
+            overlay_vermelho.fill((255, 0, 0))
+            window.blit(overlay_vermelho, (0, 0))
         # Atualiza e desenha diamantes
         for d in list(diamantes):
             status = d.update()
@@ -745,6 +772,10 @@ while game:
         window.blit(texto_tempo, ((WIDTH - largura_texto) // 2, 10))
         # Desenha picareta
         grupo_sprites.update()
+        # Desativa atração se passou o tempo
+        if atracao_ativa and pygame.time.get_ticks() - tempo_atracao_ativada > atracao_duracao:
+            atracao_ativa = False
+
         machado_sprite.rect.center = pygame.mouse.get_pos()
         window.blit(machado_sprite.image, machado_sprite.rect)
 
