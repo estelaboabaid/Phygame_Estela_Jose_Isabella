@@ -340,8 +340,8 @@ class Diamante(pygame.sprite.Sprite):
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 dx = mouse_x - self.rect.centerx
                 dy = mouse_y - self.rect.centery
-                self.rect.x += int(dx * 0.02)
-                self.rect.y += int(dy * 0.02)
+                self.rect.x += int(dx * 0.05)
+                self.rect.y += int(dy * 0.05)
 
             if self.rect.y > HEIGHT:
                 if self.tipo == "pedra" or self.tipo == "orbe":
