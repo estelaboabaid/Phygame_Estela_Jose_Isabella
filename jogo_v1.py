@@ -170,6 +170,13 @@ botao2_img = pygame.transform.scale(botao2_img, (150, 180))
 botao3_img = pygame.image.load(os.path.join(caminho_img, 'picareta_tempo.png')).convert_alpha()
 botao3_img = pygame.transform.scale(botao3_img, (150, 180))
 
+# Valores de exemplo para os botões do menu extra
+custos_powerups = {
+    "botao1": 500,
+    "botao2": 400,
+    "botao3": 300
+}
+
 #imagem de fim de jogo 
 fim_img = pygame.image.load(os.path.join(caminho_img, 'fim.png')).convert_alpha()
 fim_img = pygame.transform.scale(fim_img, (500, 500))
@@ -763,6 +770,31 @@ while game:
         window.blit(botao1_img, botao1_rect)
         window.blit(botao2_img, botao2_rect)
         window.blit(botao3_img, botao3_rect)
+
+            # Fonte para o custo
+        fonte_custo = pygame.font.SysFont(None, 32)
+
+        # Botão 1
+        valor1 = fonte_custo.render(str(custos_powerups["botao1"]), True, (255, 255, 0))
+        x1 = botao1_rect.right + 10
+        y1 = botao1_rect.centery - valor1.get_height() // 2
+        window.blit(valor1, (x1 - 30, y1 + 30))
+        window.blit(coin_img, (x1 + valor1.get_width() + 5 - 30 , y1 + 20))
+
+        # Botão 2
+        valor2 = fonte_custo.render(str(custos_powerups["botao2"]), True, (255, 255, 0))
+        x2 = botao2_rect.right + 10
+        y2 = botao2_rect.centery - valor2.get_height() // 2
+        window.blit(valor2, (x2 - 30, y2 + 30))
+        window.blit(coin_img, (x2 + valor2.get_width() + 5 - 30, y2 + 20))
+
+        # Botão 3
+        valor3 = fonte_custo.render(str(custos_powerups["botao3"]), True, (255, 255, 0))
+        x3 = botao3_rect.right + 10
+        y3 = botao3_rect.centery - valor3.get_height() // 2
+        window.blit(valor3, (x3 - 30, y3 + 30))
+        window.blit(coin_img, (x3 + valor3.get_width() + 5 - 30, y3 + 20))
+
 
         # Instrução de retorno
         sub = pygame.font.SysFont(None, 24).render("Pressione ESC para voltar", True, (180, 180, 180))
