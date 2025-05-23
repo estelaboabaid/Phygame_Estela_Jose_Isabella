@@ -166,10 +166,10 @@ botao_extra_img = pygame.transform.scale(botao_extra_img, (200, 150))
 botao1_img = pygame.image.load(os.path.join(caminho_img, 'picareta_Imã.png')).convert_alpha()
 botao1_img = pygame.transform.scale(botao1_img, (150, 180))
 
-botao2_img = pygame.image.load(os.path.join(caminho_img, 'picareta_gelo.png')).convert_alpha()
+botao2_img = pygame.image.load(os.path.join(caminho_img, 'picareta_tempo.png')).convert_alpha()
 botao2_img = pygame.transform.scale(botao2_img, (150, 180))
 
-botao3_img = pygame.image.load(os.path.join(caminho_img, 'picareta_tempo.png')).convert_alpha()
+botao3_img = pygame.image.load(os.path.join(caminho_img, 'picareta_gelo.png')).convert_alpha()
 botao3_img = pygame.transform.scale(botao3_img, (150, 180))
 
 # Valores de exemplo para os botões do menu extra
