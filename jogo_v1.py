@@ -182,9 +182,9 @@ botao3_img_pb = pygame.transform.scale(botao3_img_pb, (150, 190))
 
 # Valores de exemplo para os botões do menu extra
 custos_powerups = {
-    "botao1": 300,
-    "botao2": 200,
-    "botao3": 150
+    "botao1": 400,
+    "botao2": 250,
+    "botao3": 250
 }
 
 upgrades_comprados = {
