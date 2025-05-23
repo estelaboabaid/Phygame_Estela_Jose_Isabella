@@ -12,6 +12,8 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Diamonds Slash') #nome do jogo
 
 
+
+
 # Caminhos
 caminho_base = os.path.dirname(__file__)
 caminho_img = os.path.join(caminho_base, 'imagens')
@@ -389,6 +391,7 @@ fase_atual = "padrao" # Fase padrão, para evitar erro de referência antes de s
 
 #POWER UPS 
 atracao_ativa = False
+upgrade_imã_ativado = False  # novo controle de ativação do botão
 
 #TEMPO ATRACAO E STATUS 
 atracao_duracao = 5000  # 5 segundos em milissegundos
@@ -497,7 +500,7 @@ while game:
                 diamantes.add(Diamante())
             # Detecção contínua de clique com o mouse sobre diamantes
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_e and vezes_usadas_atracao < vezes_maximas:
+                if event.key == pygame.K_e and upgrade_imã_ativado and vezes_usadas_atracao < vezes_maximas:
                     atracao_ativa = True
                     tempo_atracao_ativada = pygame.time.get_ticks()
                     vezes_usadas_atracao += 1
@@ -579,8 +582,8 @@ while game:
                     tela = "selecionar_mundo"
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if botao1_rect.collidepoint(event.pos):
-                    atracao_ativa = not atracao_ativa  
-                    print("Atração ativada!" if atracao_ativa else "Atração desativada!")
+                    upgrade_imã_ativado = not upgrade_imã_ativado
+                    print("UPGRADE ATIVADO!" if upgrade_imã_ativado else "UPGRADE DESATIVADO")
                 elif botao2_rect.collidepoint(event.pos):
                     print("Botão 2 clicado!")
                 elif botao3_rect.collidepoint(event.pos):
