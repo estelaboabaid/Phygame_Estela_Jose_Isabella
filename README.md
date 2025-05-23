@@ -56,7 +56,7 @@
 #### Atenção: passar o mouse por cima de uma pedra ou orbe também fará com que elas sejam destruídas.
 
 ### 5- Pontuação e Moedas
-### #Ao final de cada partida, sua pontuação será convertida em moedas totais, que poderão ser usadas para desbloquear novos mundos. Ao comprar um mundo, a quantidade correspondente de moedas será descontada.
+#### Ao final de cada partida, sua pontuação será convertida em moedas totais, que poderão ser usadas para desbloquear novos mundos. Ao comprar um mundo, a quantidade correspondente de moedas será descontada.
 
 ### 6- Power-ups
 #### Durante o jogo, power-ups podem aparecer aleatoriamente. Eles concedem vantagens temporárias que facilitam sua jornada por algumas rodadas.
