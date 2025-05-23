@@ -324,6 +324,8 @@ class Diamante(pygame.sprite.Sprite):
             if self.break_timer > 15:
                 return "remover"
         else:
+            if congelamento_ativo:
+                return  # nada se move enquanto congelado
             velocidade_x = self.speedx
             velocidade_y = self.speedy
             if camera_lenta_ativa:
@@ -412,6 +414,13 @@ tempo_camera_lenta_ativada = 0
 vezes_usadas_camera_lenta = 0
 vezes_maximas_camera_lenta = 3
 
+#CONGELAMENTO DE TELA E STATUS
+upgrade_congelamento_ativado = False
+congelamento_ativo = False
+tempo_congelamento_ativado = 0
+vezes_usadas_congelamento = 0
+vezes_maximas_congelamento = 3
+
 
 mensagem_mundo = ""
 tempo_mensagem = 0
@@ -451,6 +460,8 @@ while game:
                         diamantes.empty()
                         vezes_usadas_atracao = 0
                         vezes_usadas_camera_lenta = 0
+                        vezes_usadas_congelamento = 0
+
 
     
                     elif moedas_totais >= mundos_desbloqueio["mundo_planeta"]["custo"]:
@@ -472,6 +483,8 @@ while game:
                         diamantes.empty()
                         vezes_usadas_atracao = 0
                         vezes_usadas_camera_lenta = 0
+                        vezes_usadas_congelamento = 0
+
 
                     elif moedas_totais >= mundos_desbloqueio["mundo_mistico"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_mistico"]["custo"]
@@ -494,6 +507,7 @@ while game:
                         diamantes.empty()
                         vezes_usadas_atracao = 0
                         vezes_usadas_camera_lenta = 0
+                        vezes_usadas_congelamento = 0
 
                     elif moedas_totais >= mundos_desbloqueio["mundo_verde"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_verde"]["custo"]
@@ -511,6 +525,8 @@ while game:
                     diamantes.empty()
                     vezes_usadas_atracao = 0
                     vezes_usadas_camera_lenta = 0
+                    vezes_usadas_congelamento = 0
+
 
 
                 elif botao_extra_rect.collidepoint(event.pos):
@@ -518,7 +534,8 @@ while game:
                     
         elif tela == "jogo":
             if event.type == SPAWN_EVENT:
-                diamantes.add(Diamante())
+                if not congelamento_ativo:
+                    diamantes.add(Diamante())
             # Detecção contínua de clique com o mouse sobre diamantes
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_e:
@@ -530,6 +547,11 @@ while game:
                         camera_lenta_ativa = True
                         tempo_camera_lenta_ativada = pygame.time.get_ticks()
                         vezes_usadas_camera_lenta += 1
+                    elif upgrade_congelamento_ativado and vezes_usadas_congelamento < vezes_maximas_congelamento:
+                        congelamento_ativo = True
+                        tempo_congelamento_ativado = pygame.time.get_ticks()
+                        vezes_usadas_congelamento += 1
+
         
         # Traz o resultado do evento de clique do mouse, para a animação
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -595,6 +617,7 @@ while game:
                     diamantes.empty()
                     vezes_usadas_atracao = 0
                     vezes_usadas_camera_lenta = 0
+                    vezes_usadas_congelamento = 0
 
                 elif menu_rect.collidepoint(event.pos):
                     tela = "selecionar_mundo"
@@ -611,12 +634,32 @@ while game:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if botao1_rect.collidepoint(event.pos):
                     upgrade_imã_ativado = not upgrade_imã_ativado
-                    print("UPGRADE ATIVADO!" if upgrade_imã_ativado else "UPGRADE DESATIVADO")
+                    if upgrade_imã_ativado:
+                        upgrade_camera_lenta_ativado = False
+                        upgrade_congelamento_ativado = False
+                        print("UPGRADE IMÃ ATIVADO!")
+                    else:
+                        print("UPGRADE IMÃ DESATIVADO")
+
                 elif botao2_rect.collidepoint(event.pos):
                     upgrade_camera_lenta_ativado = not upgrade_camera_lenta_ativado
-                    print("CÂMERA LENTA ATIVADA!" if upgrade_camera_lenta_ativado else "CÂMERA LENTA DESATIVADA")
+                    if upgrade_camera_lenta_ativado:
+                        upgrade_imã_ativado = False
+                        upgrade_congelamento_ativado = False
+                        print("CÂMERA LENTA ATIVADA!")
+                    else:
+                        print("CÂMERA LENTA DESATIVADA")
+
                 elif botao3_rect.collidepoint(event.pos):
-                    print("Botão 3 clicado!")
+                    upgrade_congelamento_ativado = not upgrade_congelamento_ativado
+                    if upgrade_congelamento_ativado:
+                        upgrade_imã_ativado = False
+                        upgrade_camera_lenta_ativado = False
+                        print("CONGELAMENTO ATIVADO!")
+                    else:
+                        print("CONGELAMENTO DESATIVADO")
+
+
 
 
     if tela == "info": #tela atual de informacoes 
@@ -776,6 +819,14 @@ while game:
             overlay_azul.set_alpha(80)
             overlay_azul.fill((0, 0, 180))
             window.blit(overlay_azul, (0, 0))
+        
+        #Sinaliza ativação do congelamento
+        if congelamento_ativo:
+            overlay_verde = pygame.Surface((WIDTH, HEIGHT))
+            overlay_verde.set_alpha(80)
+            overlay_verde.fill((0, 180, 0))
+            window.blit(overlay_verde, (0, 0))
+
 
         # Atualiza e desenha diamantes
         for d in list(diamantes):
@@ -818,6 +869,9 @@ while game:
         # Desativa câmera lenta se passou o tempo
         if camera_lenta_ativa and pygame.time.get_ticks() - tempo_camera_lenta_ativada > 5000:
             camera_lenta_ativa = False
+        # Desativa congelamento se passou o tempo
+        if congelamento_ativo and pygame.time.get_ticks() - tempo_congelamento_ativado > 4000:
+            congelamento_ativo = False
 
 
         machado_sprite.rect.center = pygame.mouse.get_pos()
