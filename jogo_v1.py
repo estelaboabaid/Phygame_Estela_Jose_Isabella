@@ -324,8 +324,14 @@ class Diamante(pygame.sprite.Sprite):
             if self.break_timer > 15:
                 return "remover"
         else:
-            self.rect.x += self.speedx
-            self.rect.y += self.speedy
+            velocidade_x = self.speedx
+            velocidade_y = self.speedy
+            if camera_lenta_ativa:
+                velocidade_x *= 0.3  # reduz para 30%
+                velocidade_y *= 0.3
+
+            self.rect.x += velocidade_x
+            self.rect.y += velocidade_y
 
             # Atração ao cursor se ativa
             if atracao_ativa and self.tipo in ["azul", "vermelho", "verde", "laranja", "roxo"]:
@@ -399,6 +405,13 @@ tempo_atracao_ativada = 0
 vezes_usadas_atracao = 0
 vezes_maximas = 3
 
+#CAMERA LENTA E STATUS
+upgrade_camera_lenta_ativado = False
+camera_lenta_ativa = False
+tempo_camera_lenta_ativada = 0
+vezes_usadas_camera_lenta = 0
+vezes_maximas_camera_lenta = 3
+
 
 mensagem_mundo = ""
 tempo_mensagem = 0
@@ -437,6 +450,8 @@ while game:
                         vidas = [True, True, True] #faz com que as vidas sejam verdadeiras
                         diamantes.empty()
                         vezes_usadas_atracao = 0
+                        vezes_usadas_camera_lenta = 0
+
     
                     elif moedas_totais >= mundos_desbloqueio["mundo_planeta"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_planeta"]["custo"]
@@ -456,6 +471,8 @@ while game:
                         vidas = [True, True, True]
                         diamantes.empty()
                         vezes_usadas_atracao = 0
+                        vezes_usadas_camera_lenta = 0
+
                     elif moedas_totais >= mundos_desbloqueio["mundo_mistico"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_mistico"]["custo"]
                         mundos_desbloqueio["mundo_mistico"]["desbloqueado"] = True
@@ -476,6 +493,8 @@ while game:
                         vidas = [True, True, True]
                         diamantes.empty()
                         vezes_usadas_atracao = 0
+                        vezes_usadas_camera_lenta = 0
+
                     elif moedas_totais >= mundos_desbloqueio["mundo_verde"]["custo"]:
                         moedas_totais -= mundos_desbloqueio["mundo_verde"]["custo"]
                         mundos_desbloqueio["mundo_verde"]["desbloqueado"] = True
@@ -491,6 +510,8 @@ while game:
                     vidas = [True, True, True]
                     diamantes.empty()
                     vezes_usadas_atracao = 0
+                    vezes_usadas_camera_lenta = 0
+
 
                 elif botao_extra_rect.collidepoint(event.pos):
                     tela = "menu_extra"
@@ -500,10 +521,15 @@ while game:
                 diamantes.add(Diamante())
             # Detecção contínua de clique com o mouse sobre diamantes
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_e and upgrade_imã_ativado and vezes_usadas_atracao < vezes_maximas:
-                    atracao_ativa = True
-                    tempo_atracao_ativada = pygame.time.get_ticks()
-                    vezes_usadas_atracao += 1
+                if event.key == pygame.K_e:
+                    if upgrade_imã_ativado and vezes_usadas_atracao < vezes_maximas:
+                        atracao_ativa = True
+                        tempo_atracao_ativada = pygame.time.get_ticks()
+                        vezes_usadas_atracao += 1
+                    elif upgrade_camera_lenta_ativado and vezes_usadas_camera_lenta < vezes_maximas_camera_lenta:
+                        camera_lenta_ativa = True
+                        tempo_camera_lenta_ativada = pygame.time.get_ticks()
+                        vezes_usadas_camera_lenta += 1
         
         # Traz o resultado do evento de clique do mouse, para a animação
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -568,6 +594,8 @@ while game:
                     pontuacao = 0
                     diamantes.empty()
                     vezes_usadas_atracao = 0
+                    vezes_usadas_camera_lenta = 0
+
                 elif menu_rect.collidepoint(event.pos):
                     tela = "selecionar_mundo"
 
@@ -585,7 +613,8 @@ while game:
                     upgrade_imã_ativado = not upgrade_imã_ativado
                     print("UPGRADE ATIVADO!" if upgrade_imã_ativado else "UPGRADE DESATIVADO")
                 elif botao2_rect.collidepoint(event.pos):
-                    print("Botão 2 clicado!")
+                    upgrade_camera_lenta_ativado = not upgrade_camera_lenta_ativado
+                    print("CÂMERA LENTA ATIVADA!" if upgrade_camera_lenta_ativado else "CÂMERA LENTA DESATIVADA")
                 elif botao3_rect.collidepoint(event.pos):
                     print("Botão 3 clicado!")
 
@@ -730,6 +759,7 @@ while game:
             window.blit(background_jogo, (0, 0))
         else:
             window.blit(background_jogo, (0, 0))
+        #Sinaliza ativação Ima
         if atracao_ativa:
             overlay_azul = pygame.Surface((WIDTH, HEIGHT))
             overlay_azul.set_alpha(50)
@@ -740,6 +770,13 @@ while game:
             overlay_vermelho.set_alpha(50)
             overlay_vermelho.fill((255, 0, 0))
             window.blit(overlay_vermelho, (0, 0))
+        #Sinaliza ativação camera lenta
+        if camera_lenta_ativa:
+            overlay_azul = pygame.Surface((WIDTH, HEIGHT))
+            overlay_azul.set_alpha(80)
+            overlay_azul.fill((0, 0, 180))
+            window.blit(overlay_azul, (0, 0))
+
         # Atualiza e desenha diamantes
         for d in list(diamantes):
             status = d.update()
@@ -778,6 +815,10 @@ while game:
         # Desativa atração se passou o tempo
         if atracao_ativa and pygame.time.get_ticks() - tempo_atracao_ativada > atracao_duracao:
             atracao_ativa = False
+        # Desativa câmera lenta se passou o tempo
+        if camera_lenta_ativa and pygame.time.get_ticks() - tempo_camera_lenta_ativada > 5000:
+            camera_lenta_ativa = False
+
 
         machado_sprite.rect.center = pygame.mouse.get_pos()
         window.blit(machado_sprite.image, machado_sprite.rect)
