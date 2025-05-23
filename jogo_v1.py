@@ -161,14 +161,14 @@ botao_extra_img = pygame.image.load(os.path.join(caminho_img, 'botao_extra.png')
 botao_extra_img = pygame.transform.scale(botao_extra_img, (200, 150))
 
 # Imagens dos 3 botões distintos do menu_extra
-botao1_img = pygame.image.load(os.path.join(caminho_img, 'botao1.png')).convert_alpha()
-botao1_img = pygame.transform.scale(botao1_img, (250, 150))
+botao1_img = pygame.image.load(os.path.join(caminho_img, 'picareta_Imã.png')).convert_alpha()
+botao1_img = pygame.transform.scale(botao1_img, (150, 180))
 
-botao2_img = pygame.image.load(os.path.join(caminho_img, 'botao2.png')).convert_alpha()
-botao2_img = pygame.transform.scale(botao2_img, (250, 150))
+botao2_img = pygame.image.load(os.path.join(caminho_img, 'picareta_gelo.png')).convert_alpha()
+botao2_img = pygame.transform.scale(botao2_img, (150, 180))
 
-botao3_img = pygame.image.load(os.path.join(caminho_img, 'botao3.png')).convert_alpha()
-botao3_img = pygame.transform.scale(botao3_img, (250, 150))
+botao3_img = pygame.image.load(os.path.join(caminho_img, 'picareta_tempo.png')).convert_alpha()
+botao3_img = pygame.transform.scale(botao3_img, (150, 180))
 
 #imagem de fim de jogo 
 fim_img = pygame.image.load(os.path.join(caminho_img, 'fim.png')).convert_alpha()
@@ -189,9 +189,9 @@ menu_rect = menu_tam.get_rect(center=(WIDTH // 2, HEIGHT // 1.25))
 botao_extra_rect = botao_extra_img.get_rect(bottomright=(WIDTH - 10, HEIGHT - 10))
 
 # Rects dos botões do menu extra
-botao1_rect = botao1_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 140))
+botao1_rect = botao1_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
 botao2_rect = botao2_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-botao3_rect = botao3_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 140))
+botao3_rect = botao3_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 150))
 
 #botao info 
 botao_info = pygame.image.load(os.path.join(caminho_img, 'info.png')).convert_alpha()
@@ -757,7 +757,7 @@ while game:
         # Título
         fonte_titulo = pygame.font.SysFont(None, 48)
         texto = fonte_titulo.render("POWER UPS", True, (255, 255, 255))
-        window.blit(texto, (WIDTH // 2 - texto.get_width() // 2, 80))
+        window.blit(texto, (WIDTH // 2 - texto.get_width() // 2 , 90))
 
         # Botões com imagens distintas
         window.blit(botao1_img, botao1_rect)
