@@ -12,8 +12,6 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Diamonds Slash') #nome do jogo
 
 
-
-
 # Caminhos
 caminho_base = os.path.dirname(__file__)
 caminho_img = os.path.join(caminho_base, 'imagens')
@@ -174,9 +172,15 @@ botao3_img = pygame.transform.scale(botao3_img, (150, 180))
 
 # Valores de exemplo para os botões do menu extra
 custos_powerups = {
-    "botao1": 500,
-    "botao2": 400,
-    "botao3": 300
+    "botao1": 300,
+    "botao2": 200,
+    "botao3": 150
+}
+
+upgrades_comprados = {
+    "botao1": False,
+    "botao2": False,
+    "botao3": False
 }
 
 #imagem de fim de jogo 
@@ -633,31 +637,55 @@ while game:
                     tela = "selecionar_mundo"
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if botao1_rect.collidepoint(event.pos):
-                    upgrade_imã_ativado = not upgrade_imã_ativado
-                    if upgrade_imã_ativado:
+                    if not upgrades_comprados["botao1"]:
+                        if moedas_totais >= custos_powerups["botao1"]:
+                            moedas_totais -= custos_powerups["botao1"]
+                            upgrades_comprados["botao1"] = True
+                            upgrade_imã_ativado = True
+                            upgrade_camera_lenta_ativado = False
+                            upgrade_congelamento_ativado = False
+                            print("UPGRADE IMÃ COMPRADO E ATIVADO!")
+                        else:
+                            print("Moedas insuficientes para comprar o IMÃ.")
+                    else:
+                        upgrade_imã_ativado = not upgrade_imã_ativado
                         upgrade_camera_lenta_ativado = False
                         upgrade_congelamento_ativado = False
-                        print("UPGRADE IMÃ ATIVADO!")
-                    else:
-                        print("UPGRADE IMÃ DESATIVADO")
+                        print(f"UPGRADE IMÃ {'ATIVADO' if upgrade_imã_ativado else 'DESATIVADO'}")
 
                 elif botao2_rect.collidepoint(event.pos):
-                    upgrade_camera_lenta_ativado = not upgrade_camera_lenta_ativado
-                    if upgrade_camera_lenta_ativado:
+                    if not upgrades_comprados["botao2"]:
+                        if moedas_totais >= custos_powerups["botao2"]:
+                            moedas_totais -= custos_powerups["botao2"]
+                            upgrades_comprados["botao2"] = True
+                            upgrade_camera_lenta_ativado = True
+                            upgrade_imã_ativado = False
+                            upgrade_congelamento_ativado = False
+                            print("CÂMERA LENTA COMPRADA E ATIVADA!")
+                        else:
+                            print("Moedas insuficientes para comprar CÂMERA LENTA.")
+                    else:
+                        upgrade_camera_lenta_ativado = not upgrade_camera_lenta_ativado
                         upgrade_imã_ativado = False
                         upgrade_congelamento_ativado = False
-                        print("CÂMERA LENTA ATIVADA!")
-                    else:
-                        print("CÂMERA LENTA DESATIVADA")
+                        print(f"CÂMERA LENTA {'ATIVADA' if upgrade_camera_lenta_ativado else 'DESATIVADA'}")
 
                 elif botao3_rect.collidepoint(event.pos):
-                    upgrade_congelamento_ativado = not upgrade_congelamento_ativado
-                    if upgrade_congelamento_ativado:
+                    if not upgrades_comprados["botao3"]:
+                        if moedas_totais >= custos_powerups["botao3"]:
+                            moedas_totais -= custos_powerups["botao3"]
+                            upgrades_comprados["botao3"] = True
+                            upgrade_congelamento_ativado = True
+                            upgrade_imã_ativado = False
+                            upgrade_camera_lenta_ativado = False
+                            print("CONGELAMENTO COMPRADO E ATIVADO!")
+                        else:
+                            print("Moedas insuficientes para comprar CONGELAMENTO.")
+                    else:
+                        upgrade_congelamento_ativado = not upgrade_congelamento_ativado
                         upgrade_imã_ativado = False
                         upgrade_camera_lenta_ativado = False
-                        print("CONGELAMENTO ATIVADO!")
-                    else:
-                        print("CONGELAMENTO DESATIVADO")
+                        print(f"CONGELAMENTO {'ATIVADO' if upgrade_congelamento_ativado else 'DESATIVADO'}")
 
 
 
