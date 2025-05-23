@@ -170,6 +170,16 @@ botao2_img = pygame.transform.scale(botao2_img, (150, 180))
 botao3_img = pygame.image.load(os.path.join(caminho_img, 'picareta_gelo.png')).convert_alpha()
 botao3_img = pygame.transform.scale(botao3_img, (150, 180))
 
+#Botoes picareta preto e branco
+botao1_img_pb = pygame.image.load(os.path.join(caminho_img, 'picareta1_preto.png')).convert_alpha()
+botao1_img_pb = pygame.transform.scale(botao1_img_pb, (150, 180))
+
+botao2_img_pb = pygame.image.load(os.path.join(caminho_img, 'picareta3_preto.png')).convert_alpha()
+botao2_img_pb = pygame.transform.scale(botao2_img_pb, (150, 150))
+
+botao3_img_pb = pygame.image.load(os.path.join(caminho_img, 'picareta2_preto.png')).convert_alpha()
+botao3_img_pb = pygame.transform.scale(botao3_img_pb, (150, 190))
+
 # Valores de exemplo para os botões do menu extra
 custos_powerups = {
     "botao1": 300,
@@ -203,7 +213,7 @@ botao_extra_rect = botao_extra_img.get_rect(bottomright=(WIDTH - 10, HEIGHT - 10
 
 # Rects dos botões do menu extra
 botao1_rect = botao1_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
-botao2_rect = botao2_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+botao2_rect = botao2_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 20))
 botao3_rect = botao3_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 150))
 
 #botao info 
@@ -923,10 +933,10 @@ while game:
         texto = fonte_titulo.render("POWER UPS", True, (255, 255, 255))
         window.blit(texto, (WIDTH // 2 - texto.get_width() // 2 , 90))
 
-        # Botões com imagens distintas
-        window.blit(botao1_img, botao1_rect)
-        window.blit(botao2_img, botao2_rect)
-        window.blit(botao3_img, botao3_rect)
+       # Mostrar imagem em preto e branco se não comprou, colorida se sim
+        window.blit(botao1_img if upgrades_comprados["botao1"] else botao1_img_pb, botao1_rect)
+        window.blit(botao2_img if upgrades_comprados["botao2"] else botao2_img_pb, botao2_rect)
+        window.blit(botao3_img if upgrades_comprados["botao3"] else botao3_img_pb, botao3_rect)
 
             # Fonte para o custo
         fonte_custo = pygame.font.SysFont(None, 32)
