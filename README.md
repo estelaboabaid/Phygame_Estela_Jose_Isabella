@@ -31,7 +31,7 @@
 
 #### Powers-ups:
 #### - **Imã de Diamantes**: atrai diamantes automaticamente
-#### - **Tempo Congelado**: deixa em camera lenta os obstáculos por alguns segundos
+#### - **Tempo Congelado**: congela os obstáculos por alguns segundos
 #### - **Modo calma diamantes**: reduz a velocidade dos diamantes por tempo limitado
 
 ## Como Jogar:
