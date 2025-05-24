@@ -64,3 +64,5 @@
 
 #### Fontes:
 #### - Musica de fundo: www.megupets.com
+#### - Machado da animação: https://br.freepik.com/vetores-premium/conjunto-de-eixos-isometricos-em-diferentes-posicoes-ferramenta-metalica-afiada-de-lenhador_80871422.htm#fromView=search&page=1&position=35&uuid=dee87288-6970-448d-9922-64a946a0bfa3&query=Sprites+axes 
+#### - Imagens de fundo, diamantesm botões, pedra, orbe e powers-ups foram feitos pelo 'Chat GPT'
