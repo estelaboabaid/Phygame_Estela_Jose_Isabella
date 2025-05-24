@@ -1,3 +1,4 @@
+# Importando as bibliotecas necessárias para o jogo
 import pygame
 import os
 import random
@@ -5,7 +6,7 @@ import sys
 
 pygame.init()
 
-# Tamanho da tela
+# Projetando o tamanho da tela
 WIDTH = 900
 HEIGHT = 700
 window = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -13,20 +14,20 @@ pygame.display.set_caption('Diamonds Slash') #nome do jogo
 
 
 # Caminhos
-caminho_base = os.path.dirname(__file__)
-caminho_img = os.path.join(caminho_base, 'imagens')
+caminho_base = os.path.dirname(__file__)  # Obtém o diretório do arquivo atual
+caminho_img = os.path.join(caminho_base, 'imagens')  # Caminho para a pasta de imagens que serão usadas para o jogo 
 
-#SONS
+# Inicializa o mixer de som do Pygame
 pygame.mixer.init()
 
-# Caminho dos sons
+# Caminho dos sons, no caso a pasta em que eles estão
 caminho_som = os.path.join(caminho_base, 'sons')
 
 # Sons de quebra
 som_quebra_diamante = pygame.mixer.Sound(os.path.join(caminho_som, 'cristal_quebrando.wav'))
 som_quebra_pedra = pygame.mixer.Sound(os.path.join(caminho_som, 'pedra_quebrando.wav'))
 
-#Ajustando os sons
+#Ajustando o volume dos sons
 som_quebra_diamante.set_volume(0.1)
 som_quebra_pedra.set_volume(0.1)
 
@@ -34,6 +35,8 @@ som_quebra_pedra.set_volume(0.1)
 pygame.mixer.music.load(os.path.join(caminho_som, "cave.mp3"))
 pygame.mixer.music.set_volume(0.3)  # Volume de 0.0 a 1.0
 pygame.mixer.music.play(-1)  # -1 significa repetir para sempre
+
+# Carrega as imagens que serão usadas no jogo	
 
 # Carrega imagens
 background_inicio = pygame.image.load(os.path.join(caminho_img, 'background.png')).convert()
@@ -185,13 +188,15 @@ botao2_img_pb = pygame.transform.scale(botao2_img_pb, (150, 150))
 botao3_img_pb = pygame.image.load(os.path.join(caminho_img, 'picareta2_preto.png')).convert_alpha()
 botao3_img_pb = pygame.transform.scale(botao3_img_pb, (150, 190))
 
-# Valores de exemplo para os botões do menu extra
+# Valores dos powers ups que estão na tela de selecionar o mundo  
+
+# Definição dos custos dos upgrades
 custos_powerups = {
     "botao1": 400,
     "botao2": 250,
     "botao3": 250
 }
-
+# Definição dos upgrades comprados, inicialmente todos são False. Logo não inicialmente o jogador não tem nenhum upgrade
 upgrades_comprados = {
     "botao1": False,
     "botao2": False,
@@ -202,6 +207,7 @@ upgrades_comprados = {
 fim_img = pygame.image.load(os.path.join(caminho_img, 'fim.png')).convert_alpha()
 fim_img = pygame.transform.scale(fim_img, (500, 500))
 
+# Define o tamanho do botão de reação (como se fosse a parte da tela que clica para acontecer algo)
 #botao de jogar 
 button_rect = button_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 #botao do mundo de planeta 
@@ -234,7 +240,7 @@ mundos_desbloqueio = {
     "mundo_verde": {"custo": 1000, "desbloqueado": False}
 }
 
-#variaveis para o controle de tela 
+# variaveis de inicio para o controle de tela 
 sequencia_info = False
 indice_tela_info = 0
 tempo_tela_info = 0
@@ -281,9 +287,25 @@ fotos_info = [foto1, foto2, foto3, foto4, foto5, foto6, foto7, foto8, foto9, fot
 
 #classe de diamante 
 class Diamante(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
+    """
+    Classe que representa os diamantes no jogo.
 
+    Esta classe usa de pygame.sprite.Sprite e define o que esta acontecendo ou pode 
+    acontecer com os diamantes ao longo do jogo, já que eles são exibidos
+    e manipulados como sprite na tela
+    Atributos:
+    - imagem: superfície do diamante.
+    - rect: área retangular de colisão e posicionamento do sprite.
+    - tipo: tipo do diamante (cor ou função especial).
+    - broken: indica se o diamante já foi quebrado.
+    Métodos:
+    - __init__: Inicializa o sprite do diamante.
+    """
+    def __init__(self):
+        """
+        Inicializa um objeto Diamante com imagem e posicionamento padrão.
+        """
+        super().__init__()
         chance = random.random() #para a chance dos diamantes serem  definidas 
         if chance < 0.07: #a orbe te chance de 7% de aparecer 
             self.tipo = "orbe"
@@ -338,6 +360,10 @@ class Diamante(pygame.sprite.Sprite):
         self.speedy = random.randint(3, 6) + velocidade_extra
 
     def update(self):
+        """
+        Atualiza o estado do diamante a cada frame do jogo.
+
+        """
         if self.broken:
             self.break_timer += 1
             if self.break_timer > 15:
@@ -379,7 +405,23 @@ class Diamante(pygame.sprite.Sprite):
 
 # Inicia uma classe para a animação da picareta
 class Machado(pygame.sprite.Sprite):
+    """
+    Classe que representa o machado/picareta que é usado para quebrar os diamantes no jogo.
+
+    Esta classe usa de pygame.sprite.Sprite e define a posição da picareta na tela, além de controlar a animação
+    de acordo com o clique do mouse. A picareta é um sprite que segue o cursor do mouse e muda de imagem
+    Atributos:
+    - imagem: superfície do machado/picareta.
+    - rect: área retangular de colisão e posicionamento do sprite.
+    - tipo: se esta coletando o diamante ou não.
+    Métodos:
+    - __init__: Inicializa o sprite da animação.
+    """
+        
     def __init__(self, x, y, img_picareta):  # Recebe os comandos do tamanho da picareta
+        """
+        Inicializa a animação do machado/picareta com imagem e posicionamento padrão.
+        """
         super().__init__()
         self.image = img_picareta
         self.animacao = False
@@ -393,7 +435,7 @@ class Machado(pygame.sprite.Sprite):
     def iniciar_animacao(self):  # Define como True para iniciar a animação
         self.animacao = True
 
-    def update(self):  # Parte muda a animação de acordo com o que esta no loop
+    def update(self):  # Parte muda a animação de acordo com o que esta no loop, logo sua atualização
         if self.animacao:
             self.frame_atual = 1
         else:

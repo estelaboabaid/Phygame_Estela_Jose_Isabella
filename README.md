@@ -8,7 +8,7 @@
 
 ### Ao iniciar o jogo clicando no botão **"Start"**, o jogador será levado para a primeira fase, ambientada em uma **mina subterrânea**.  
 ### Neste cenário, **diamantes** começarão a surgir de ambos os lados da tela, e o objetivo principal será **coletar o máximo possível** desses 
-### diamantes utilizando uma **picareta** controlada pelo jogador no periodo de 1 minutos.
+### diamantes utilizando um **machado** controlada pelo jogador no periodo de 1 minutos.
 
 ### Cada diamante possui uma **cor específica**, representando diferentes valores em pontos, e cada rodada o jogador possui 3 vidas que são perdidas 
 ### a cada diamante não coletado. Esses pontos são acumulados à medida que o jogador coleta os diamantes e, posteriormente, convertidos em  moedas, que podem ser usadas na loja do jogo para adquirir melhorias (*upgrades*), como os Poderes especiais (*power-ups*) que facilitam a coleta
@@ -22,6 +22,8 @@
 #### -**Vermelho** = 5 moedas
 #### -**Laranja** = 10 moedas
 #### -**Roxo** = 15 moedas
+#### -**Pedra** = -1 vida
+#### -**Roxo** = -3 vidas (acaba a partida imediatamente)
 
 #### Cenarios:
 #### -**Inicial** = Mina 
