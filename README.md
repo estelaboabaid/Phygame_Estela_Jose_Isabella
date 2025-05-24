@@ -60,3 +60,6 @@
 
 ### 6- Power-ups
 #### Durante o jogo, power-ups podem aparecer aleatoriamente. Eles concedem vantagens temporárias que facilitam sua jornada por algumas rodadas.
+
+#### Fontes:
+#### - Musica de fundo: www.megupets.com
