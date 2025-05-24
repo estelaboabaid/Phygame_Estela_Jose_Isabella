@@ -165,7 +165,7 @@ mundo_verde_bloq = pygame.transform.scale(mundo_verde_bloq, (200, 200))
 
 
 # Botão inferior direito na tela de mundos
-botao_extra_img = pygame.image.load(os.path.join(caminho_img, 'botao_extra.png')).convert_alpha()
+botao_extra_img = pygame.image.load(os.path.join(caminho_img, 'botao_extra1.png')).convert_alpha()
 botao_extra_img = pygame.transform.scale(botao_extra_img, (200, 150))
 
 # Imagens dos 3 botões distintos do menu_extra
@@ -226,6 +226,16 @@ botao_extra_rect = botao_extra_img.get_rect(bottomright=(WIDTH - 10, HEIGHT - 10
 botao1_rect = botao1_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
 botao2_rect = botao2_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 20))
 botao3_rect = botao3_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 150))
+
+# Imagens de descrição dos power-ups
+desc_botao1_img = pygame.image.load(os.path.join(caminho_img, 'desc_botao1.png')).convert_alpha()
+desc_botao1_img = pygame.transform.scale(desc_botao1_img, (180, 120))
+
+desc_botao2_img = pygame.image.load(os.path.join(caminho_img, 'desc_botao2.png')).convert_alpha()
+desc_botao2_img = pygame.transform.scale(desc_botao2_img, (180, 120))
+
+desc_botao3_img = pygame.image.load(os.path.join(caminho_img, 'desc_botao3.png')).convert_alpha()
+desc_botao3_img = pygame.transform.scale(desc_botao3_img, (180, 120))
 
 #botao info 
 botao_info = pygame.image.load(os.path.join(caminho_img, 'info.png')).convert_alpha()
@@ -780,7 +790,7 @@ while game:
 
     elif tela == "selecionar_mundo":  #Parte do codigo aonde desenha os icones na tela de selecionar o mundo 
         window.blit(background_jogo, (0, 0))
-
+        window.blit(botao_extra_img, botao_extra_rect)
         # Mostrar moedas totais acumuladas no topo
         window.blit(coin_img, (10, 10))
         texto_moedas_totais = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
@@ -979,6 +989,10 @@ while game:
         window.blit(botao1_img if upgrades_comprados["botao1"] else botao1_img_pb, botao1_rect)
         window.blit(botao2_img if upgrades_comprados["botao2"] else botao2_img_pb, botao2_rect)
         window.blit(botao3_img if upgrades_comprados["botao3"] else botao3_img_pb, botao3_rect)
+
+        window.blit(desc_botao1_img, (botao1_rect.left - 200, botao1_rect.centery - 60))
+        window.blit(desc_botao2_img, (botao2_rect.left - 200, botao2_rect.centery - 60))
+        window.blit(desc_botao3_img, (botao3_rect.left - 200, botao3_rect.centery - 60))
 
             # Fonte para o custo
         fonte_custo = pygame.font.SysFont(None, 32)
