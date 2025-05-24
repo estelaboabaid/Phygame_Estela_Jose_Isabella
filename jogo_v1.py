@@ -30,6 +30,11 @@ som_quebra_pedra = pygame.mixer.Sound(os.path.join(caminho_som, 'pedra_quebrando
 som_quebra_diamante.set_volume(0.1)
 som_quebra_pedra.set_volume(0.1)
 
+# Som de fundo
+pygame.mixer.music.load(os.path.join(caminho_som, "cave.mp3"))
+pygame.mixer.music.set_volume(0.3)  # Volume de 0.0 a 1.0
+pygame.mixer.music.play(-1)  # -1 significa repetir para sempre
+
 # Carrega imagens
 background_inicio = pygame.image.load(os.path.join(caminho_img, 'background.png')).convert()
 background_inicio = pygame.transform.scale(background_inicio, (WIDTH, HEIGHT))
@@ -446,7 +451,6 @@ grupo_sprites.add(machado_sprite)
 # Loop principal
 while game:
     clock.tick(FPS)
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game = False
@@ -740,51 +744,47 @@ while game:
         texto_moedas_totais = pygame.font.SysFont(None, 36).render(str(moedas_totais), True, (255, 255, 0))
         window.blit(texto_moedas_totais, (60, 15))
 
-        # Mundo Planeta canto superior direito 
+        # Mundo Planeta canto inferior direito 
         if mundos_desbloqueio["mundo_planeta"]["desbloqueado"]: # Se o mundo for desbloqueado(comprado), ele ira aparecer dessa forma
             window.blit(mundo_planeta_img, mundo_planeta_rect)
         else:
             window.blit(mundo_planeta_bloq, mundo_planeta_rect)  # planeta permanece bloqueado 
-            bloqueado = not mundos_desbloqueio["mundo_planeta"]["desbloqueado"] # define o que seria o mundo bloqueado
-            if bloqueado: # se ele estiver bloqueado a moeda aparece
-                x1, y1 = mundo_planeta_rect.center # centraliza as moedas com a posição dos mundos
-                valor1 = fonte_moeda.render("500", True, (255, 255, 0))  # faz a moeda do tamanho e valor do mundo
-                larg_val1 = valor1.get_width()  # Pega a largura do que sera escrito
-                alt_val1 = valor1.get_height()  # Pega a altura do que sera escrito 
-                window.blit(valor1, (x1 - larg_val1 //2, y1- 130))  # centraliza o valor em cima da moeda
-                window.blit(coin_img, (x1 - larg_val1 //2 + larg_val1 + 5,  y1- 130 + alt_val1//2 - 20))  #desenha moeda em cima do mundo 
-            window.blit(botao_extra_img, botao_extra_rect)
+            custo1 = mundos_desbloqueio["mundo_planeta"]["custo"] # Define o custo do mundo planeta
+            x, y = mundo_planeta_rect.center # Pega a posição do mundo planeta que sera usada para calcular a posição da moeda
+            y += 230
+            valor1 = fonte_moeda.render(str(custo1), True, (255, 255, 0))
+            larg1 = valor1.get_width() # Pega a largura do que sera usada para escreer a moeda
+            alt1 = valor1.get_height()   # Pega a altura do que sera usada para escreer a moeda
+            window.blit(valor1, (x - larg1 // 2, y - 130))
+            window.blit(coin_img, (x - larg1 // 2 + larg1 + 5, y - 130 + alt1 // 2 - 20))
 
-    # Mundo Místico, canto inferior direito
+    # Mundo Místico, canto superior direito
         if mundos_desbloqueio["mundo_mistico"]["desbloqueado"]:
             window.blit(mundo_mistico_img, mundo_mistico_rect)
         else:
             window.blit(mundo_mistico_bloq, mundo_mistico_rect)
-            bloqueado = not mundos_desbloqueio["mundo_planeta"]["desbloqueado"]
-            if bloqueado:
-                x2, y2 = mundo_planeta_rect.center 
-                val2 = fonte_moeda.render("250", True, (255, 255, 0))
-                alt_val2 = val2.get_height()  
-                largura_val2 = val2.get_width() 
-                window.blit(coin_img, (x2 + largura_val2//2+5, y2 + 100 + alt_val2//2 - 20)) 
-                window.blit(val2, (x2 - largura_val2//2, y2 + 100))
-            window.blit(botao_extra_img, botao_extra_rect)
+            custo2 = mundos_desbloqueio["mundo_mistico"]["custo"]
+            x2, y2 = mundo_mistico_rect.center
+            valor2 = fonte_moeda.render(str(custo2), True, (255, 255, 0))
+            larg2 = valor2.get_width()
+            y2 -= 230
+            alt2 = valor2.get_height()
+            window.blit(valor2, (x2 - larg2 // 2, y2 + 100))
+            window.blit(coin_img, (x2 + larg2 // 2 + 5, y2 + 100 + alt2 // 2 - 20))
+
             
     # Mundo Verde canto inferior esquerdo
         if mundos_desbloqueio["mundo_verde"]["desbloqueado"]:
             window.blit(mundo_verde_img, mundo_verde_rect)
         else:
             window.blit(mundo_verde_bloq, mundo_verde_rect)
-            bloqueado = not mundos_desbloqueio["mundo_planeta"]["desbloqueado"] 
-            if bloqueado: 
-                x3, y3 = mundo_verde_rect.center
-                val3 = fonte_moeda.render("1000", True, (255, 255, 0))
-                alt_val3 = val3.get_height()  
-                larg_val3 = val3.get_width()  
-                base3 = y3 + 100
-                window.blit(val3, (x3- larg_val3//2, base3))
-                window.blit(coin_img, (x3+larg_val3//2+5, base3+alt_val3//2-20))  
-            window.blit(botao_extra_img, botao_extra_rect)
+            custo3 = mundos_desbloqueio["mundo_verde"]["custo"]
+            x3, y3 = mundo_verde_rect.center
+            valor3 = fonte_moeda.render(str(custo3), True, (255, 255, 0))
+            larg3 = valor3.get_width()
+            alt3 = valor3.get_height()
+            window.blit(valor3, (x3 - larg3 // 2, y3 + 100))
+            window.blit(coin_img, (x3 + larg3 // 2 + 5, y3 + 100 + alt3 // 2 - 20))
 
     # Mundo Mina (sempre desbloqueado)
         window.blit(mundo1_img, mundo1_rect)
