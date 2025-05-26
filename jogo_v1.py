@@ -192,9 +192,9 @@ botao3_img_pb = pygame.transform.scale(botao3_img_pb, (150, 190))
 
 # Definição dos custos dos upgrades
 custos_powerups = {
-    "botao1": 4,
-    "botao2": 2,
-    "botao3": 2
+    "botao1": 400,
+    "botao2": 250,
+    "botao3": 250
 }
 # Definição dos upgrades comprados, inicialmente todos são False. Logo não inicialmente o jogador não tem nenhum upgrade
 upgrades_comprados = {
@@ -981,6 +981,26 @@ while game:
         if congelamento_ativo and pygame.time.get_ticks() - tempo_congelamento_ativado > 4000:
             congelamento_ativo = False
             poder_em_uso = False
+        
+        # Mostrar ícones dos upgrades ativos no canto superior esquerdo
+        posicao_x = 10
+        posicao_y = 60
+        tamanho_upgrade = (40, 48)  # tamanho menor para não ocupar muito espaço
+
+        if atracao_ativa:
+            upgrade1_mini = pygame.transform.scale(botao1_img, tamanho_upgrade)
+            window.blit(upgrade1_mini, (posicao_x, posicao_y))
+            posicao_y += tamanho_upgrade[1] + 5  # espaço entre os ícones
+
+        if camera_lenta_ativa:
+            upgrade2_mini = pygame.transform.scale(botao2_img, tamanho_upgrade)
+            window.blit(upgrade2_mini, (posicao_x, posicao_y))
+            posicao_y += tamanho_upgrade[1] + 5
+
+        if congelamento_ativo:
+            upgrade3_mini = pygame.transform.scale(botao3_img, tamanho_upgrade)
+            window.blit(upgrade3_mini, (posicao_x, posicao_y))
+
 
 
         machado_sprite.rect.center = pygame.mouse.get_pos()
