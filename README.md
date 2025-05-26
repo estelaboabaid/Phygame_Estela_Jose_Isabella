@@ -60,11 +60,13 @@
 #### Ao final de cada partida, sua pontuação será convertida em moedas totais, que poderão ser usadas para desbloquear novos mundos. Ao comprar um mundo, a quantidade correspondente de moedas será descontada.
 
 ### 6- Power-ups
-#### Durante o jogo, power-ups podem aparecer aleatoriamente. Eles concedem vantagens temporárias que facilitam sua jornada por algumas rodadas.
+#### Com o dinheiro acumulado durante o jogo, você pode comprar os powerups que podem ser utilizados durante a jogatina. Você pode usar cada tipo de power-up três vezes por partida
 
 ### Jogo inspirado no "Frut Ninja" criado pela Halfbrick Studios.
 
 #### Fontes:
+#### Som cristal quebrando https://www.youtube.com/watch?v=XsFWcO7jpLE&ab_channel=Bumblebee%3A%29
+#### Som de pedra quebrando https://www.youtube.com/watch?v=npL3NfpOd9A&ab_channel=SoundEffects%E3%80%90FREE%E3%80%91
 #### - Musica de fundo: www.megupets.com
 #### - Machado da animação: https://br.freepik.com/vetores-premium/conjunto-de-eixos-isometricos-em-diferentes-posicoes-ferramenta-metalica-afiada-de-lenhador_80871422.htm#fromView=search&page=1&position=35&uuid=dee87288-6970-448d-9922-64a946a0bfa3&query=Sprites+axes 
 #### - Imagens de fundo, diamantesm botões, pedra, orbe e powers-ups foram feitos pelo 'Chat GPT'
