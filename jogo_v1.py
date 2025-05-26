@@ -237,13 +237,13 @@ botao3_rect = botao3_img.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 150))
 
 # Imagens de descrição dos power-ups
 desc_botao1_img = pygame.image.load(os.path.join(caminho_img, 'desc_botao1.png')).convert_alpha()
-desc_botao1_img = pygame.transform.scale(desc_botao1_img, (180, 120))
+desc_botao1_img = pygame.transform.scale(desc_botao1_img, (250, 200))
 
 desc_botao2_img = pygame.image.load(os.path.join(caminho_img, 'desc_botao2.png')).convert_alpha()
-desc_botao2_img = pygame.transform.scale(desc_botao2_img, (180, 120))
+desc_botao2_img = pygame.transform.scale(desc_botao2_img, (250, 200))
 
 desc_botao3_img = pygame.image.load(os.path.join(caminho_img, 'desc_botao3.png')).convert_alpha()
-desc_botao3_img = pygame.transform.scale(desc_botao3_img, (180, 120))
+desc_botao3_img = pygame.transform.scale(desc_botao3_img, (250, 200))
 
 #botao info 
 botao_info = pygame.image.load(os.path.join(caminho_img, 'info.png')).convert_alpha()
