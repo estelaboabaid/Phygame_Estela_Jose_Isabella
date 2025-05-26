@@ -192,9 +192,9 @@ botao3_img_pb = pygame.transform.scale(botao3_img_pb, (150, 190))
 
 # Definição dos custos dos upgrades
 custos_powerups = {
-    "botao1": 400,
-    "botao2": 250,
-    "botao3": 250
+    "botao1": 4,
+    "botao2": 2,
+    "botao3": 2
 }
 # Definição dos upgrades comprados, inicialmente todos são False. Logo não inicialmente o jogador não tem nenhum upgrade
 upgrades_comprados = {
@@ -500,6 +500,12 @@ tempo_congelamento_ativado = 0
 vezes_usadas_congelamento = 0
 vezes_maximas_congelamento = 3
 
+poder_em_uso = False  # controla se algum powerup está ativo
+
+#função para poder ativar um powerup de uma vez
+def algum_powerup_ativo():
+    return atracao_ativa or camera_lenta_ativa or congelamento_ativo
+
 
 mensagem_mundo = ""
 tempo_mensagem = 0
@@ -616,19 +622,27 @@ while game:
                     diamantes.add(Diamante())
             # Detecção contínua de clique com o mouse sobre diamantes
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_e:
-                    if upgrade_imã_ativado and vezes_usadas_atracao < vezes_maximas:
+                if event.key == pygame.K_i:
+                    if not algum_powerup_ativo() and upgrade_imã_ativado and vezes_usadas_atracao < vezes_maximas:
                         atracao_ativa = True
                         tempo_atracao_ativada = pygame.time.get_ticks()
                         vezes_usadas_atracao += 1
-                    elif upgrade_camera_lenta_ativado and vezes_usadas_camera_lenta < vezes_maximas_camera_lenta:
+                        poder_em_uso = True
+
+                elif event.key == pygame.K_t:
+                    if not algum_powerup_ativo() and upgrade_camera_lenta_ativado and vezes_usadas_camera_lenta < vezes_maximas_camera_lenta:
                         camera_lenta_ativa = True
                         tempo_camera_lenta_ativada = pygame.time.get_ticks()
                         vezes_usadas_camera_lenta += 1
-                    elif upgrade_congelamento_ativado and vezes_usadas_congelamento < vezes_maximas_congelamento:
+                        poder_em_uso = True
+
+                elif event.key == pygame.K_c:
+                    if not algum_powerup_ativo() and upgrade_congelamento_ativado and vezes_usadas_congelamento < vezes_maximas_congelamento:
                         congelamento_ativo = True
                         tempo_congelamento_ativado = pygame.time.get_ticks()
                         vezes_usadas_congelamento += 1
+                        poder_em_uso = True
+
 
         
         # Traz o resultado do evento de clique do mouse, para a animação
@@ -711,64 +725,50 @@ while game:
                 if event.key == pygame.K_ESCAPE:
                     tela = "selecionar_mundo"
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                # BOTÃO 1 – IMÃ
                 if botao1_rect.collidepoint(event.pos):
                     if not upgrades_comprados["botao1"]:
                         if moedas_totais >= custos_powerups["botao1"]:
                             moedas_totais -= custos_powerups["botao1"]
                             upgrades_comprados["botao1"] = True
                             upgrade_imã_ativado = True
-                            upgrade_camera_lenta_ativado = False
-                            upgrade_congelamento_ativado = False
                             mensagem_powerups["botao1"]["texto"] = "UPGRADE IMÃ COMPRADO E ATIVADO!"
                         else:
                             mensagem_powerups["botao1"]["texto"] = "Moedas insuficientes para o IMÃ."
                     else:
                         upgrade_imã_ativado = not upgrade_imã_ativado
-                        upgrade_camera_lenta_ativado = False
-                        upgrade_congelamento_ativado = False
                         mensagem_powerups["botao1"]["texto"] = f"UPGRADE IMÃ {'ATIVADO' if upgrade_imã_ativado else 'DESATIVADO'}"
-
                     mensagem_powerups["botao1"]["tempo"] = pygame.time.get_ticks()
 
+                # BOTÃO 2 – CÂMERA LENTA
                 elif botao2_rect.collidepoint(event.pos):
                     if not upgrades_comprados["botao2"]:
                         if moedas_totais >= custos_powerups["botao2"]:
                             moedas_totais -= custos_powerups["botao2"]
                             upgrades_comprados["botao2"] = True
                             upgrade_camera_lenta_ativado = True
-                            upgrade_imã_ativado = False
-                            upgrade_congelamento_ativado = False
                             mensagem_powerups["botao2"]["texto"] = "CÂMERA LENTA COMPRADA E ATIVADA!"
                         else:
                             mensagem_powerups["botao2"]["texto"] = "Moedas insuficientes para CÂMERA LENTA."
                     else:
                         upgrade_camera_lenta_ativado = not upgrade_camera_lenta_ativado
-                        upgrade_imã_ativado = False
-                        upgrade_congelamento_ativado = False
                         mensagem_powerups["botao2"]["texto"] = f"CÂMERA LENTA {'ATIVADA' if upgrade_camera_lenta_ativado else 'DESATIVADA'}"
-
                     mensagem_powerups["botao2"]["tempo"] = pygame.time.get_ticks()
 
+                # BOTÃO 3 – CONGELAMENTO
                 elif botao3_rect.collidepoint(event.pos):
                     if not upgrades_comprados["botao3"]:
                         if moedas_totais >= custos_powerups["botao3"]:
                             moedas_totais -= custos_powerups["botao3"]
                             upgrades_comprados["botao3"] = True
                             upgrade_congelamento_ativado = True
-                            upgrade_imã_ativado = False
-                            upgrade_camera_lenta_ativado = False
                             mensagem_powerups["botao3"]["texto"] = "CONGELAMENTO COMPRADO E ATIVADO!"
                         else:
                             mensagem_powerups["botao3"]["texto"] = "Moedas insuficientes para CONGELAMENTO."
                     else:
                         upgrade_congelamento_ativado = not upgrade_congelamento_ativado
-                        upgrade_imã_ativado = False
-                        upgrade_camera_lenta_ativado = False
                         mensagem_powerups["botao3"]["texto"] = f"CONGELAMENTO {'ATIVADO' if upgrade_congelamento_ativado else 'DESATIVADO'}"
-
                     mensagem_powerups["botao3"]["tempo"] = pygame.time.get_ticks()
-
-
 
 
 
@@ -972,12 +972,15 @@ while game:
         # Desativa atração se passou o tempo
         if atracao_ativa and pygame.time.get_ticks() - tempo_atracao_ativada > atracao_duracao:
             atracao_ativa = False
+            poder_em_uso = False
         # Desativa câmera lenta se passou o tempo
         if camera_lenta_ativa and pygame.time.get_ticks() - tempo_camera_lenta_ativada > 5000:
             camera_lenta_ativa = False
+            poder_em_uso = False
         # Desativa congelamento se passou o tempo
         if congelamento_ativo and pygame.time.get_ticks() - tempo_congelamento_ativado > 4000:
             congelamento_ativo = False
+            poder_em_uso = False
 
 
         machado_sprite.rect.center = pygame.mouse.get_pos()
