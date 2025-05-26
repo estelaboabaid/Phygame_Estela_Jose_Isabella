@@ -60,7 +60,7 @@
 #### Ao final de cada partida, sua pontuação será convertida em moedas totais, que poderão ser usadas para desbloquear novos mundos. Ao comprar um mundo, a quantidade correspondente de moedas será descontada.
 
 ### 6- Power-ups
-#### Durante o jogo, power-ups podem aparecer aleatoriamente. Eles concedem vantagens temporárias que facilitam sua jornada por algumas rodadas.
+#### Com o dinheiro acumulado durante o jogo, você pode comprar os powerups que podem ser utilizados durante a jogatina. Você pode usar cada tipo de power-up três vezes por partida
 
 ### Jogo inspirado no "Frut Ninja" criado pela Halfbrick Studios.
 
