@@ -753,7 +753,7 @@ while game:
                     else:
                         upgrade_camera_lenta_ativado = not upgrade_camera_lenta_ativado
                         mensagem_powerups["botao2"]["texto"] = f"CÂMERA LENTA {'ATIVADA' if upgrade_camera_lenta_ativado else 'DESATIVADA'}"
-                    mensagem_powerups["botao2"]["tempo"] = pygame.time.get_ticks()
+                    mensagem_powerups["botao2"]["tempo"] = pygame.time.get_ticks()  # <-- ESSA LINHA É FUNDAMENTAL
 
                 # BOTÃO 3 – CONGELAMENTO
                 elif botao3_rect.collidepoint(event.pos):
@@ -768,7 +768,7 @@ while game:
                     else:
                         upgrade_congelamento_ativado = not upgrade_congelamento_ativado
                         mensagem_powerups["botao3"]["texto"] = f"CONGELAMENTO {'ATIVADO' if upgrade_congelamento_ativado else 'DESATIVADO'}"
-                    mensagem_powerups["botao3"]["tempo"] = pygame.time.get_ticks()
+                    mensagem_powerups["botao3"]["tempo"] = pygame.time.get_ticks()  # <-- ESSA LINHA É FUNDAMENTAL
 
 
 
