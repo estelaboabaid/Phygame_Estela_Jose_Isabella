@@ -192,7 +192,7 @@ botao3_img_pb = pygame.transform.scale(botao3_img_pb, (150, 190))
 
 # Definição dos custos dos upgrades
 custos_powerups = {
-    "botao1": 400,
+    "botao1": 40,
     "botao2": 250,
     "botao3": 250
 }
@@ -202,6 +202,14 @@ upgrades_comprados = {
     "botao2": False,
     "botao3": False
 }
+
+# Mensagem dos powerups 
+mensagem_powerups = {
+    "botao1": {"texto": "", "tempo": 0},
+    "botao2": {"texto": "", "tempo": 0},
+    "botao3": {"texto": "", "tempo": 0}
+}
+
 
 #imagem de fim de jogo 
 fim_img = pygame.image.load(os.path.join(caminho_img, 'fim.png')).convert_alpha()
@@ -710,14 +718,16 @@ while game:
                             upgrade_imã_ativado = True
                             upgrade_camera_lenta_ativado = False
                             upgrade_congelamento_ativado = False
-                            print("UPGRADE IMÃ COMPRADO E ATIVADO!")
+                            mensagem_powerups["botao1"]["texto"] = "UPGRADE IMÃ COMPRADO E ATIVADO!"
                         else:
-                            print("Moedas insuficientes para comprar o IMÃ.")
+                            mensagem_powerups["botao1"]["texto"] = "Moedas insuficientes para o IMÃ."
                     else:
                         upgrade_imã_ativado = not upgrade_imã_ativado
                         upgrade_camera_lenta_ativado = False
                         upgrade_congelamento_ativado = False
-                        print(f"UPGRADE IMÃ {'ATIVADO' if upgrade_imã_ativado else 'DESATIVADO'}")
+                        mensagem_powerups["botao1"]["texto"] = f"UPGRADE IMÃ {'ATIVADO' if upgrade_imã_ativado else 'DESATIVADO'}"
+
+                    mensagem_powerups["botao1"]["tempo"] = pygame.time.get_ticks()
 
                 elif botao2_rect.collidepoint(event.pos):
                     if not upgrades_comprados["botao2"]:
@@ -727,14 +737,16 @@ while game:
                             upgrade_camera_lenta_ativado = True
                             upgrade_imã_ativado = False
                             upgrade_congelamento_ativado = False
-                            print("CÂMERA LENTA COMPRADA E ATIVADA!")
+                            mensagem_powerups["botao2"]["texto"] = "CÂMERA LENTA COMPRADA E ATIVADA!"
                         else:
-                            print("Moedas insuficientes para comprar CÂMERA LENTA.")
+                            mensagem_powerups["botao2"]["texto"] = "Moedas insuficientes para CÂMERA LENTA."
                     else:
                         upgrade_camera_lenta_ativado = not upgrade_camera_lenta_ativado
                         upgrade_imã_ativado = False
                         upgrade_congelamento_ativado = False
-                        print(f"CÂMERA LENTA {'ATIVADA' if upgrade_camera_lenta_ativado else 'DESATIVADA'}")
+                        mensagem_powerups["botao2"]["texto"] = f"CÂMERA LENTA {'ATIVADA' if upgrade_camera_lenta_ativado else 'DESATIVADA'}"
+
+                    mensagem_powerups["botao2"]["tempo"] = pygame.time.get_ticks()
 
                 elif botao3_rect.collidepoint(event.pos):
                     if not upgrades_comprados["botao3"]:
@@ -744,14 +756,17 @@ while game:
                             upgrade_congelamento_ativado = True
                             upgrade_imã_ativado = False
                             upgrade_camera_lenta_ativado = False
-                            print("CONGELAMENTO COMPRADO E ATIVADO!")
+                            mensagem_powerups["botao3"]["texto"] = "CONGELAMENTO COMPRADO E ATIVADO!"
                         else:
-                            print("Moedas insuficientes para comprar CONGELAMENTO.")
+                            mensagem_powerups["botao3"]["texto"] = "Moedas insuficientes para CONGELAMENTO."
                     else:
                         upgrade_congelamento_ativado = not upgrade_congelamento_ativado
                         upgrade_imã_ativado = False
                         upgrade_camera_lenta_ativado = False
-                        print(f"CONGELAMENTO {'ATIVADO' if upgrade_congelamento_ativado else 'DESATIVADO'}")
+                        mensagem_powerups["botao3"]["texto"] = f"CONGELAMENTO {'ATIVADO' if upgrade_congelamento_ativado else 'DESATIVADO'}"
+
+                    mensagem_powerups["botao3"]["tempo"] = pygame.time.get_ticks()
+
 
 
 
@@ -1022,6 +1037,17 @@ while game:
         # Instrução de retorno
         sub = pygame.font.SysFont(None, 24).render("Pressione ESC para voltar", True, (180, 180, 180))
         window.blit(sub, (WIDTH // 2 - sub.get_width() // 2, HEIGHT - 40))
+
+        # Mostrar mensagens temporárias de ativação/desativação
+        fonte_mensagem = pygame.font.SysFont(None, 28)
+        tempo_atual = pygame.time.get_ticks()
+
+        for botao, rect in [("botao1", botao1_rect), ("botao2", botao2_rect), ("botao3", botao3_rect)]:
+            msg = mensagem_powerups[botao]
+            if msg["texto"] and tempo_atual - msg["tempo"] < 2000:  # mostra por 2 segundos
+                texto = fonte_mensagem.render(msg["texto"], True, (255, 255, 255))
+                window.blit(texto, (rect.right + 3, rect.centery - 10))
+
                 
 
     pygame.display.update()
