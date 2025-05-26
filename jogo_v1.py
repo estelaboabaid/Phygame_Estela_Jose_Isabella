@@ -651,6 +651,7 @@ while game:
                     d.quebrar()
                     if d.tipo == "orbe":
                         vidas = [False, False, False]
+                        moedas_totais += pontuacao
                         tela = "fim"
                     elif d.tipo == "pedra":
                         for i in range(len(vidas)):
