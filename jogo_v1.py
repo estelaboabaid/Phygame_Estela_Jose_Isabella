@@ -192,7 +192,7 @@ botao3_img_pb = pygame.transform.scale(botao3_img_pb, (150, 190))
 
 # Definição dos custos dos upgrades
 custos_powerups = {
-    "botao1": 40,
+    "botao1": 400,
     "botao2": 250,
     "botao3": 250
 }
