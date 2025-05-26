@@ -62,6 +62,8 @@
 ### 6- Power-ups
 #### Durante o jogo, power-ups podem aparecer aleatoriamente. Eles concedem vantagens temporárias que facilitam sua jornada por algumas rodadas.
 
+### Jogo inspirado no "Frut Ninja" criado pela Halfbrick Studios.
+
 #### Fontes:
 #### - Musica de fundo: www.megupets.com
 #### - Machado da animação: https://br.freepik.com/vetores-premium/conjunto-de-eixos-isometricos-em-diferentes-posicoes-ferramenta-metalica-afiada-de-lenhador_80871422.htm#fromView=search&page=1&position=35&uuid=dee87288-6970-448d-9922-64a946a0bfa3&query=Sprites+axes 
