@@ -4,6 +4,8 @@
 
 ## **Integrantes:** Estela Boabaid, Isabella Massimini e Jose Capito
 
+## Link para video no Youtube: https://youtu.be/3t3ujg4Dhsg
+
 ### Como funciona
 
 ### Ao iniciar o jogo clicando no botão **"Start"**, o jogador será levado para a primeira fase, ambientada em uma **mina subterrânea**.  
