@@ -262,7 +262,7 @@ mundos_desbloqueio = {
 sequencia_info = False
 indice_tela_info = 0
 tempo_tela_info = 0
-total_telas_info = 17
+total_telas_info = 25
 
 #fotos de info 
 # Imagens da sequência de info
@@ -300,7 +300,24 @@ foto16 = pygame.image.load(os.path.join(caminho_img, 'foto16.png')).convert_alph
 foto16 = pygame.transform.scale(foto16, (WIDTH, HEIGHT))
 foto17 = pygame.image.load(os.path.join(caminho_img, 'foto17.png')).convert_alpha()
 foto17 = pygame.transform.scale(foto17, (WIDTH, HEIGHT))
-fotos_info = [foto1, foto2, foto3, foto4, foto5, foto6, foto7, foto8, foto9, foto10, foto11, foto12, foto13, foto14, foto15, foto16, foto17]
+foto18 = pygame.image.load(os.path.join(caminho_img, '1.png')).convert_alpha()
+foto18 = pygame.transform.scale(foto18, (WIDTH, HEIGHT))
+foto19 = pygame.image.load(os.path.join(caminho_img, '2.png')).convert_alpha()
+foto19 = pygame.transform.scale(foto19, (WIDTH, HEIGHT))
+foto20 = pygame.image.load(os.path.join(caminho_img, '3.png')).convert_alpha()
+foto20 = pygame.transform.scale(foto20, (WIDTH, HEIGHT))
+foto21 = pygame.image.load(os.path.join(caminho_img, '4.png')).convert_alpha()
+foto21 = pygame.transform.scale(foto21, (WIDTH, HEIGHT))
+foto22 = pygame.image.load(os.path.join(caminho_img, '5.png')).convert_alpha()
+foto22 = pygame.transform.scale(foto22, (WIDTH, HEIGHT))
+foto23 = pygame.image.load(os.path.join(caminho_img, '6.png')).convert_alpha()
+foto23 = pygame.transform.scale(foto23, (WIDTH, HEIGHT))
+foto24 = pygame.image.load(os.path.join(caminho_img, '7.png')).convert_alpha()
+foto24 = pygame.transform.scale(foto24, (WIDTH, HEIGHT))
+foto25 = pygame.image.load(os.path.join(caminho_img, '8.png')).convert_alpha()
+foto25 = pygame.transform.scale(foto25, (WIDTH, HEIGHT))
+
+fotos_info = [foto1, foto2, foto3, foto4, foto5, foto6, foto7, foto8, foto9, foto10, foto11, foto12, foto13, foto14, foto15, foto16, foto17, foto18, foto19, foto20, foto21, foto22, foto23, foto24, foto25]
 
 
 #classe de diamante 
@@ -772,22 +789,25 @@ while game:
 
 
 
-    if tela == "info": #tela atual de informacoes 
-            window.blit(fotos_info[indice_tela_info], (0, 0)) #desenha a imagem na posicao 0,0
+    if tela == "info":  # tela atual de informações
+        window.blit(fotos_info[indice_tela_info], (0, 0))  # desenha a imagem na posição 0,0
 
-            #define o tempo de exibicao dependendo da imagem 
-            if indice_tela_info >= total_telas_info -2: #se tiver nas duas ultimas imagens 
-                tempo_exibicao = 2000 #o tempo é de 2 segundo 
-            else: #no resto das imagens 
-                tempo_exibicao = 200# otempo de exibicao é 0.2 segundos 
+        # Defina o tempo de exibição dependendo da imagem
+        imagens_lentas = [15, 16, 21, 22, 23, 24]  # fotos 16, 17, 22, 23, 24, 25
 
-            #verifica se ja passou o tempo necessario pra trocar de imagem
-            if pygame.time.get_ticks() - tempo_tela_info >= tempo_exibicao:
-                indice_tela_info += 1#passa pra proxima imagem
-                tempo_tela_info = pygame.time.get_ticks()#atualiza o tempo de referencia para a proxima troca de imagem
-                if indice_tela_info >= total_telas_info: #se ja mostrou todas as imagens
-                    sequencia_info = False #termina a sequencia das fotos de informacao 
-                    tela = "inicio" #volta parar a tela inicial 
+        if indice_tela_info in imagens_lentas:
+            tempo_exibicao = 2000  # 2 segundos
+        else:
+            tempo_exibicao = 200  # 0.2 segundos
+
+        # verifica se já passou o tempo necessário pra trocar de imagem
+        if pygame.time.get_ticks() - tempo_tela_info >= tempo_exibicao:
+            indice_tela_info += 1  # passa pra próxima imagem
+            tempo_tela_info = pygame.time.get_ticks()  # atualiza o tempo de referência para a próxima troca de imagem
+            if indice_tela_info >= total_telas_info:
+                sequencia_info = False
+                tela = "inicio"
+
             
 
     # TELAS
