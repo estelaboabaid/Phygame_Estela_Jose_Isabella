@@ -430,6 +430,10 @@ class Diamante(pygame.sprite.Sprite):
         return None
 
     def quebrar(self):
+        """
+        quebra a pedra ou diamante
+        """
+        
         self.image = self.image_broken
         self.broken = True
         # Som correspondente
@@ -469,8 +473,14 @@ class Machado(pygame.sprite.Sprite):
         
     def iniciar_animacao(self):  # Define como True para iniciar a animação
         self.animacao = True
+        """
+        comeca a animacao
+        """
 
-    def update(self):  # Parte muda a animação de acordo com o que esta no loop, logo sua atualização
+    def update(self):  
+        """
+        Parte muda a animação de acordo com o que esta no loop, logo sua atualização
+        """
         if self.animacao:
             self.frame_atual = 1
         else:
@@ -537,7 +547,6 @@ while game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game = False
-        # tudo que você já tem...
 
         if tela == "inicio":
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -587,13 +596,13 @@ while game:
                         vezes_usadas_congelamento = 0
 
 
-                    elif moedas_totais >= mundos_desbloqueio["mundo_mistico"]["custo"]:
+                    elif moedas_totais >= mundos_desbloqueio["mundo_mistico"]["custo"]: #pra saber se tem moedas o suficiente 
                         moedas_totais -= mundos_desbloqueio["mundo_mistico"]["custo"]
                         mundos_desbloqueio["mundo_mistico"]["desbloqueado"] = True
                         mensagem_mundo = "Mundo Místico desbloqueado!"
                         tempo_mensagem = pygame.time.get_ticks()
                     else:
-                        mensagem_mundo = "Moedas insuficientes, mundo bloqueado."
+                        mensagem_mundo = "Moedas insuficientes, mundo bloqueado." #se nao tiver moedas o suficiente 
                         tempo_mensagem = pygame.time.get_ticks()
                     
 
@@ -610,14 +619,14 @@ while game:
                         vezes_usadas_camera_lenta = 0
                         vezes_usadas_congelamento = 0
 
-                    elif moedas_totais >= mundos_desbloqueio["mundo_verde"]["custo"]:
+                    elif moedas_totais >= mundos_desbloqueio["mundo_verde"]["custo"]: #se tiver moedas o suficinte desbloqueia 
                         moedas_totais -= mundos_desbloqueio["mundo_verde"]["custo"]
                         mundos_desbloqueio["mundo_verde"]["desbloqueado"] = True
                     else:
-                        mensagem_mundo = "Moedas insuficientes, mundo bloqueado!"
+                        mensagem_mundo = "Moedas insuficientes, mundo bloqueado!" #se nao tiver moedas aparece essa mensagem 
                         tempo_mensagem = pygame.time.get_ticks()
         # MUNDO MINA (sempre desbloqueado)
-                elif mundo1_rect.collidepoint(event.pos):  # supondo que esse botão é o da mina
+                elif mundo1_rect.collidepoint(event.pos): 
                     tela = "jogo"
                     fase_atual = "mina"
                     tempo_inicial = pygame.time.get_ticks()
@@ -918,7 +927,7 @@ while game:
         window.blit(sub, (80, HEIGHT // 2 + 30))
 
     elif tela == "jogo":
-        if fase_atual == "mundo_planeta":
+        if fase_atual == "mundo_planeta": 
             window.blit(background_planeta, (0, 0))
         elif fase_atual == "mundo_mistico":
             window.blit(background_mistico, (0, 0))
